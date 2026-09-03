@@ -1,0 +1,11 @@
+{
+  "id": "business-consulting",
+  "displayName": "Business Consulting",
+  "vertical": [
+    "PROFESSIONAL_SERVICES"
+  ],
+  "purpose": [
+    "LOCATION"
+  ],
+  "pageSetType": "ENTITY"
+}
