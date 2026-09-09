@@ -26,6 +26,7 @@ import {
   ThemeOptions,
   createItemSource,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getDefaultRTF,
   getThemeColorCssValue,
   resolveComponentData,
@@ -604,11 +605,14 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingServicesSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           data-scope={servicesSectionScope}
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "72px 24px",
           }}
@@ -793,8 +797,9 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                     >
                       <div
                         style={{
-                          backgroundColor: getThemeColorCssValue(
+                          ...getSurfaceColorStyle(
                             props.cardBackgroundColor,
+                            streamDocument,
                           ),
                           borderRadius: showImage ? "20px 20px 0 0" : "20px",
                           display: "flex",
@@ -876,8 +881,9 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                               cardImageStyles.aspectRatio > 0
                                 ? cardImageStyles.aspectRatio
                                 : undefined,
-                            backgroundColor: getThemeColorCssValue(
+                            ...getSurfaceColorStyle(
                               props.cardBackgroundColor,
+                              streamDocument,
                             ),
                             borderRadius:
                               cardImageStyles.styles?.borderRadius === "default"
@@ -932,7 +938,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
               </div>
             </EntityField>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

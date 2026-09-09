@@ -25,6 +25,7 @@ import {
   createItemSource,
   getDefaultRTF,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   type StyledImageValue,
@@ -502,11 +503,14 @@ const BusinessConsultingBlogSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingBlogSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           data-scope={blogSectionScope}
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "72px 24px",
           }}
@@ -648,8 +652,9 @@ const BusinessConsultingBlogSectionComponent: PuckComponent<
                       background={props.cardBackgroundColor}
                       key={`${resolvedTitle || "article"}-${index}`}
                       style={{
-                        backgroundColor: getThemeColorCssValue(
+                        ...getSurfaceColorStyle(
                           props.cardBackgroundColor,
+                          streamDocument,
                         ),
                         borderRadius: "20px",
                         display: "flex",
@@ -784,7 +789,7 @@ const BusinessConsultingBlogSectionComponent: PuckComponent<
               </div>
             </EntityField>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

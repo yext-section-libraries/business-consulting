@@ -10,12 +10,14 @@ import {
   type AddressType,
 } from "@yext/pages-components";
 import {
+  Background,
   EntityField,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
   YextFields,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   type StyledTextValue,
@@ -506,11 +508,14 @@ const BusinessConsultingFooterSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingFooterSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <footer
+        <Background
+          as="footer"
+          background={props.section.backgroundColor}
           data-scope={footerSectionScope}
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "40px 24px",
           }}
@@ -701,7 +706,7 @@ const BusinessConsultingFooterSectionComponent: PuckComponent<
               ) : null}
             </div>
           </div>
-        </footer>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

@@ -4,6 +4,7 @@ import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { AnalyticsScopeProvider, useAnalytics } from "@yext/pages-components";
 import {
+  Background,
   EntityField,
   MaybeRTF,
   VisibilityWrapper,
@@ -13,6 +14,7 @@ import {
   createItemSource,
   getDefaultRTF,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   type StyledTextValue,
@@ -394,11 +396,14 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingFaqSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           data-scope={faqSectionScope}
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "72px 24px",
           }}
@@ -493,8 +498,9 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
                     <article
                       key={`${resolvedQuestion || "faq"}-${index}`}
                       style={{
-                        backgroundColor: getThemeColorCssValue(
+                        ...getSurfaceColorStyle(
                           props.rowBackgroundColor,
+                          streamDocument,
                         ),
                         borderRadius: "18px",
                         overflow: "hidden",
@@ -575,7 +581,7 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
               </div>
             </EntityField>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

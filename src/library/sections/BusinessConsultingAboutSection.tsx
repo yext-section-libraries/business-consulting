@@ -19,6 +19,7 @@ import {
   YextFields,
   getDefaultRTF,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   type ComprehensiveCTAValue,
@@ -352,12 +353,15 @@ const BusinessConsultingAboutSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingAboutSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           data-scope={aboutSectionScope}
           className="about-section"
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "56px 24px",
           }}
@@ -368,8 +372,9 @@ const BusinessConsultingAboutSectionComponent: PuckComponent<
               background={props.panelBackgroundColor}
               className="about-section__panel"
               style={{
-                backgroundColor: getThemeColorCssValue(
+                ...getSurfaceColorStyle(
                   props.panelBackgroundColor,
+                  streamDocument,
                 ),
                 borderRadius: "24px",
                 display: "grid",
@@ -494,7 +499,7 @@ const BusinessConsultingAboutSectionComponent: PuckComponent<
               </div>
             </Background>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

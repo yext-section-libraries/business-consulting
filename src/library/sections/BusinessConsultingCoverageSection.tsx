@@ -18,6 +18,7 @@ import {
   YextEntityField,
   YextFields,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getDefaultRTF,
   getThemeColorCssValue,
   mergeMeta,
@@ -325,7 +326,7 @@ const formatPhoneNumber = (
 };
 
 const cardStyle = (backgroundColor: ThemeColor): React.CSSProperties => ({
-  backgroundColor: getThemeColorCssValue(backgroundColor),
+  ...getSurfaceColorStyle(backgroundColor),
   borderRadius: "20px",
   padding: "22px",
 });
@@ -470,10 +471,15 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
           <AnalyticsScopeProvider
             name={`BusinessConsultingCoverageSection${getAnalyticsScopeHash(props.id)}`}
           >
-            <section
+            <Background
+              as="section"
+              background={props.section.backgroundColor}
               data-scope={coverageSectionScope}
               style={{
-                backgroundColor: getThemeColorCssValue(props.section.backgroundColor),
+                ...getSurfaceColorStyle(
+                  props.section.backgroundColor,
+                  streamDocument,
+                ),
                 padding: "72px 24px",
               }}
             >
@@ -484,7 +490,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
                   nearby locations here.
                 </p>,
               )}
-            </section>
+            </Background>
           </AnalyticsScopeProvider>
         </VisibilityWrapper>
       );
@@ -499,16 +505,21 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
           <AnalyticsScopeProvider
             name={`BusinessConsultingCoverageSection${getAnalyticsScopeHash(props.id)}`}
           >
-            <section
+            <Background
+              as="section"
+              background={props.section.backgroundColor}
               data-scope={coverageSectionScope}
               style={{
-                backgroundColor: getThemeColorCssValue(props.section.backgroundColor),
+                ...getSurfaceColorStyle(
+                  props.section.backgroundColor,
+                  streamDocument,
+                ),
                 padding: "72px 24px",
               }}
             >
               <style>{coverageSectionScopedTypographyStyles}</style>
               {renderSectionContent(<p>Loading nearby locations</p>)}
-            </section>
+            </Background>
           </AnalyticsScopeProvider>
         </VisibilityWrapper>
       );
@@ -527,10 +538,15 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
           <AnalyticsScopeProvider
             name={`BusinessConsultingCoverageSection${getAnalyticsScopeHash(props.id)}`}
           >
-            <section
+            <Background
+              as="section"
+              background={props.section.backgroundColor}
               data-scope={coverageSectionScope}
               style={{
-                backgroundColor: getThemeColorCssValue(props.section.backgroundColor),
+                ...getSurfaceColorStyle(
+                  props.section.backgroundColor,
+                  streamDocument,
+                ),
                 padding: "72px 24px",
               }}
             >
@@ -538,7 +554,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
               {renderSectionContent(
                 <p>No nearby locations found for this location</p>,
               )}
-            </section>
+            </Background>
           </AnalyticsScopeProvider>
         </VisibilityWrapper>
       );
@@ -552,10 +568,15 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
         <AnalyticsScopeProvider
           name={`BusinessConsultingCoverageSection${getAnalyticsScopeHash(props.id)}`}
         >
-          <section
+          <Background
+            as="section"
+            background={props.section.backgroundColor}
             data-scope={coverageSectionScope}
             style={{
-              backgroundColor: getThemeColorCssValue(props.section.backgroundColor),
+              ...getSurfaceColorStyle(
+                props.section.backgroundColor,
+                streamDocument,
+              ),
               padding: "72px 24px",
             }}
           >
@@ -687,7 +708,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
                 })}
               </div>,
             )}
-          </section>
+          </Background>
         </AnalyticsScopeProvider>
       </VisibilityWrapper>
     );

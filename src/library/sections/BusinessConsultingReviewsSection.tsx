@@ -4,6 +4,7 @@ import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
 import {
+  Background,
   EntityField,
   VisibilityWrapper,
   YextComponentConfig,
@@ -11,6 +12,7 @@ import {
   YextFields,
   getAggregateRating,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   type StyledTextValue,
@@ -372,10 +374,15 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
         <AnalyticsScopeProvider
           name={`BusinessConsultingReviewsSection${getAnalyticsScopeHash(props.id)}`}
         >
-          <section
+          <Background
+            as="section"
+            background={props.section.backgroundColor}
             data-scope={reviewsSectionScope}
             style={{
-              backgroundColor: getThemeColorCssValue(props.section.backgroundColor),
+              ...getSurfaceColorStyle(
+                props.section.backgroundColor,
+                streamDocument,
+              ),
               padding: "72px 24px",
             }}
           >
@@ -432,7 +439,10 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                     <article
                       key={`${review.authorName ?? "review"}-${index}`}
                       style={{
-                        backgroundColor: getThemeColorCssValue(props.cardBackgroundColor),
+                        ...getSurfaceColorStyle(
+                          props.cardBackgroundColor,
+                          streamDocument,
+                        ),
                         borderRadius: "20px",
                         padding: "22px",
                       }}
@@ -490,7 +500,7 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                   ))}
               </div>
             </div>
-          </section>
+          </Background>
         </AnalyticsScopeProvider>
       </VisibilityWrapper>
     );

@@ -18,6 +18,7 @@ import {
   YextEntityField,
   YextFields,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getDefaultRTF,
   getThemeColorCssValue,
   resolveComponentData,
@@ -353,12 +354,15 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingPromoSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           data-scope={promoSectionScope}
           className="promo-section"
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "56px 24px",
           }}
@@ -369,8 +373,9 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
               background={props.panelBackgroundColor}
               className="promo-section__panel"
               style={{
-                backgroundColor: getThemeColorCssValue(
+                ...getSurfaceColorStyle(
                   props.panelBackgroundColor,
+                  streamDocument,
                 ),
                 borderRadius: "24px",
                 display: "grid",
@@ -495,7 +500,7 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
               ) : null}
             </Background>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );

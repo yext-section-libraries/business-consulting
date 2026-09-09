@@ -22,6 +22,7 @@ import {
   YextFields,
   getDefaultRTF,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   type ComprehensiveCTAValue,
@@ -441,7 +442,7 @@ const formatPhone = (
 };
 
 const cardStyle = (backgroundColor: ThemeColor): React.CSSProperties => ({
-  backgroundColor: getThemeColorCssValue(backgroundColor),
+  ...getSurfaceColorStyle(backgroundColor),
   borderRadius: "20px",
   padding: "24px",
 });
@@ -827,10 +828,15 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
         <AnalyticsScopeProvider
           name={`BusinessConsultingDetailsSection${getAnalyticsScopeHash(props.id)}`}
         >
-          <section
+          <Background
+            as="section"
+            background={props.section.backgroundColor}
             data-scope={detailsSectionScope}
             style={{
-              backgroundColor: getThemeColorCssValue(props.section.backgroundColor),
+              ...getSurfaceColorStyle(
+                props.section.backgroundColor,
+                streamDocument,
+              ),
               padding: "72px 24px",
             }}
           >
@@ -1111,7 +1117,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
                 </article>
               </div>
             </div>
-          </section>
+          </Background>
         </AnalyticsScopeProvider>
       </VisibilityWrapper>
     );

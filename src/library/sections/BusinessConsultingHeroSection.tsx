@@ -22,6 +22,7 @@ import {
   ThemeOptions,
   getAggregateRating,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getDefaultRTF,
   getThemeColorCssValue,
   resolveComponentData,
@@ -493,7 +494,10 @@ const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHe
               <Background
                 background={props.cardBackgroundColor}
                 style={{
-                  backgroundColor: getThemeColorCssValue(props.cardBackgroundColor),
+                  ...getSurfaceColorStyle(
+                    props.cardBackgroundColor,
+                    streamDocument,
+                  ),
                   borderRadius: "24px",
                   margin: "0 auto",
                   maxWidth: "760px",

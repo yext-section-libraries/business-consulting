@@ -4,12 +4,14 @@ import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { AnalyticsScopeProvider, Link } from "@yext/pages-components";
 import {
+  Background,
   EntityField,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
   YextFields,
   getAnalyticsScopeHash,
+  getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveBreadcrumbs,
   resolveComponentData,
@@ -264,12 +266,15 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
         <AnalyticsScopeProvider
           name={`BusinessConsultingBreadcrumbsSection${getAnalyticsScopeHash(props.id)}`}
         >
-          <section
+          <Background
+            as="section"
+            background={props.section.backgroundColor}
             data-scope={breadcrumbsSectionScope}
             className="breadcrumbs-section"
             style={{
-              backgroundColor: getThemeColorCssValue(
+              ...getSurfaceColorStyle(
                 props.section.backgroundColor,
+                streamDocument,
               ),
               padding: "24px",
             }}
@@ -279,8 +284,9 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
               <div
                 className="breadcrumbs-section__panel"
                 style={{
-                  backgroundColor: getThemeColorCssValue(
+                  ...getSurfaceColorStyle(
                     props.panelBackgroundColor,
+                    streamDocument,
                   ),
                   color: getThemeColorCssValue(currentPageColor),
                   fontFamily: "Arial, Helvetica, sans-serif",
@@ -291,7 +297,7 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
                 Create a directory to enable breadcrumbs.
               </div>
             </div>
-          </section>
+          </Background>
         </AnalyticsScopeProvider>
       </VisibilityWrapper>
     );
@@ -305,12 +311,15 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
       <AnalyticsScopeProvider
         name={`BusinessConsultingBreadcrumbsSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <section
+        <Background
+          as="section"
+          background={props.section.backgroundColor}
           data-scope={breadcrumbsSectionScope}
           className="breadcrumbs-section"
           style={{
-            backgroundColor: getThemeColorCssValue(
+            ...getSurfaceColorStyle(
               props.section.backgroundColor,
+              streamDocument,
             ),
             padding: "24px",
           }}
@@ -320,8 +329,9 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
             <div
               className="breadcrumbs-section__panel"
               style={{
-                backgroundColor: getThemeColorCssValue(
+                ...getSurfaceColorStyle(
                   props.panelBackgroundColor,
+                  streamDocument,
                 ),
               }}
             >
@@ -412,7 +422,7 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
               </ol>
             </div>
           </div>
-        </section>
+        </Background>
       </AnalyticsScopeProvider>
     </VisibilityWrapper>
   );
