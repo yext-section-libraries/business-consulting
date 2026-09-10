@@ -1,5 +1,5 @@
 {
   "id": "business-consulting-locator",
   "displayName": "Locator",
-  "pageGroupType": "LOCATOR"
+  "pageSetType": "LOCATOR"
 }
