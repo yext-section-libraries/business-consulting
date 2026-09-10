@@ -33,22 +33,14 @@ import {
   type StyledTextValue,
   type ThemeColor,
   type TranslatableAssetImage,
-  type TranslatableRichText,
-  type TranslatableString,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  aspectRatioOptions,
+  getRichTextStyleOverrides,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type BlogImageField = YextEntityField<
   ImageType | ComplexImageType | TranslatableAssetImage
@@ -452,7 +444,7 @@ const BusinessConsultingBlogSectionFields: YextFields<BusinessConsultingBlogSect
             aspectRatio: {
               label: "Aspect Ratio",
               type: "basicSelector",
-              options: ThemeOptions.ASPECT_RATIO,
+              options: aspectRatioOptions,
             },
             imageConstrain: {
               label: "Image Constrain",
@@ -569,35 +561,16 @@ const BusinessConsultingBlogSectionComponent: PuckComponent<
                   const cardBodyStyles = props.cardStyles.body;
                   const cardCtaStyles = props.cardStyles.cta;
                   const cardImageStyles = props.cardStyles.image;
-                  const bodyStyleOverrides = {
-                    color: getThemeColorCssValue(
-                      cardBodyStyles.fontColor ??
-                        cardOverlayColor.contrastingColor,
-                    ),
-                    ...(cardBodyStyles.styles.fontFamily !== "default"
-                      ? { fontFamily: cardBodyStyles.styles.fontFamily }
-                      : {}),
-                    ...(cardBodyStyles.styles.fontSize !== "default"
-                      ? { fontSize: cardBodyStyles.styles.fontSize }
-                      : {}),
-                    ...(cardBodyStyles.styles.fontStyle !== "default"
-                      ? { fontStyle: cardBodyStyles.styles.fontStyle }
-                      : {}),
-                    ...(cardBodyStyles.styles.fontWeight !== "default"
-                      ? { fontWeight: cardBodyStyles.styles.fontWeight }
-                      : {}),
-                    ...(cardBodyStyles.styles.textTransform !== "default"
-                      ? { textTransform: cardBodyStyles.styles.textTransform }
-                      : {}),
-                  };
+                  const bodyStyleOverrides = getRichTextStyleOverrides(
+                    cardBodyStyles.styles,
+                    cardBodyStyles.fontColor ??
+                      cardOverlayColor.contrastingColor,
+                  );
                   const resolvedBody = card.body?.text
                     ? resolveComponentData(
                         card.body.text,
                         locale,
                         streamDocument,
-                        {
-                          richTextStyleOverrides: bodyStyleOverrides,
-                        },
                       )
                     : undefined;
                   const resolvedImage = card.image;

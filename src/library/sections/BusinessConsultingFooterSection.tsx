@@ -2,7 +2,6 @@ import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -20,34 +19,22 @@ import {
   getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
-  type StyledTextValue,
   type ThemeColor,
   type TranslatableString,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
+import type {
+  PhoneFieldProps,
+  PhoneItemProps,
+  StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type FooterLink = {
   label: YextEntityField<TranslatableString>;
   link: YextEntityField<string>;
   linkType: "URL" | "EMAIL" | "PHONE";
   openInNewTab: boolean;
-};
-
-type PhoneItemProps = {
-  number: YextEntityField<string>;
-  label?: YextEntityField<TranslatableString>;
-};
-
-type PhoneFieldProps = {
-  items: PhoneItemProps[];
-  phoneFormat: "international" | "domestic";
-  includeHyperlink?: boolean;
 };
 
 export type BusinessConsultingFooterSectionProps = {
@@ -287,25 +274,6 @@ const BusinessConsultingFooterSectionFields: YextFields<BusinessConsultingFooter
       },
     },
   };
-
-const formatPhoneNumber = (
-  phoneNumberString: string,
-  format: "international" | "domestic" = "domestic",
-): string => {
-  const cleanedPhoneNumberString = phoneNumberString.replace(
-    /(?!^\+)\+|[^\d+]/g,
-    "",
-  );
-  const parsedPhoneNumber = parsePhoneNumber(cleanedPhoneNumberString);
-
-  if (!parsedPhoneNumber.valid || parsedPhoneNumber.number === undefined) {
-    return phoneNumberString;
-  }
-
-  return format === "international"
-    ? parsedPhoneNumber.number.international
-    : parsedPhoneNumber.number.national;
-};
 
 const footerSectionScope = "ybc-footer-section";
 

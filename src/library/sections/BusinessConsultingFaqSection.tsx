@@ -17,24 +17,16 @@ import {
   getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
-  type StyledTextValue,
   type ThemeColor,
   type TranslatableRichText,
   type TranslatableString,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  getRichTextStyleOverrides,
+  StyledRtfProps,
+  StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type FaqItem = {
   question: YextEntityField<TranslatableString>;
@@ -462,35 +454,16 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
                     props.itemStyles?.question ?? defaultFaqItemStyles.question;
                   const answerStyles =
                     props.itemStyles?.answer ?? defaultFaqItemStyles.answer;
-                  const answerStyleOverrides = {
-                    color: getThemeColorCssValue(
-                      answerStyles.fontColor ??
-                        props.rowBackgroundColor.contrastingColor,
-                    ),
-                    ...(answerStyles.styles.fontFamily !== "default"
-                      ? { fontFamily: answerStyles.styles.fontFamily }
-                      : {}),
-                    ...(answerStyles.styles.fontSize !== "default"
-                      ? { fontSize: answerStyles.styles.fontSize }
-                      : {}),
-                    ...(answerStyles.styles.fontStyle !== "default"
-                      ? { fontStyle: answerStyles.styles.fontStyle }
-                      : {}),
-                    ...(answerStyles.styles.fontWeight !== "default"
-                      ? { fontWeight: answerStyles.styles.fontWeight }
-                      : {}),
-                    ...(answerStyles.styles.textTransform !== "default"
-                      ? { textTransform: answerStyles.styles.textTransform }
-                      : {}),
-                  };
+                  const answerStyleOverrides = getRichTextStyleOverrides(
+                    answerStyles.styles,
+                    answerStyles.fontColor ??
+                      props.rowBackgroundColor.contrastingColor,
+                  );
                   const resolvedAnswer = item.answer
                     ? resolveComponentData(
                         item.answer,
                         locale,
                         streamDocument,
-                        {
-                          richTextStyleOverrides: answerStyleOverrides,
-                        },
                       )
                     : undefined;
 

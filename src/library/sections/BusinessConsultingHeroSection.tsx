@@ -19,7 +19,6 @@ import {
   YextComponentConfig,
   YextEntityField,
   YextFields,
-  ThemeOptions,
   getAggregateRating,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
@@ -27,26 +26,18 @@ import {
   getThemeColorCssValue,
   resolveComponentData,
   type ComprehensiveCTAValue,
-  type StyledTextValue,
   type ThemeColor,
   type TranslatableAssetImage,
-  type TranslatableRichText,
-  type TranslatableString,
   type StyledImageValue,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  aspectRatioOptions,
+  getRichTextStyleOverrides,
+  getScopedTypographyStyles,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type HeroImageField = {
   image: YextEntityField<ImageType | ComplexImageType | TranslatableAssetImage>;
@@ -153,7 +144,7 @@ const BusinessConsultingHeroSectionFields: YextFields<BusinessConsultingHeroSect
         aspectRatio: {
           label: "Aspect Ratio",
           type: "basicSelector",
-          options: ThemeOptions.ASPECT_RATIO,
+          options: aspectRatioOptions,
           visible: false,
         },
         imageConstrain: {
@@ -271,90 +262,8 @@ const defaultStarColor: ThemeColor = {
 
 const heroSectionScope = "ybc-hero-section";
 
-const heroSectionScopedTypographyStyles = `
-  [data-scope="${heroSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
-    line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
-    line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
-  }
-
-  [data-scope="${heroSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
-    line-height: 1.5;
-    text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
-    letter-spacing: var(--letterSpacing-link-letterSpacing);
-  }
-`;
+const heroSectionScopedTypographyStyles =
+  getScopedTypographyStyles(heroSectionScope);
 
 const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHeroSectionProps> =
   (props) => {
@@ -370,29 +279,15 @@ const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHe
     const starColor = props.starColor ?? defaultStarColor;
     const resolvedHeading =
       resolveComponentData(props.heading.text, locale, streamDocument) || "";
-    const bodyStyleOverrides = {
-      color: getThemeColorCssValue(
-        props.body.fontColor ?? props.cardBackgroundColor.contrastingColor,
-      ),
-      ...(props.body.styles.fontFamily !== "default"
-        ? { fontFamily: props.body.styles.fontFamily }
-        : {}),
-      ...(props.body.styles.fontSize !== "default"
-        ? { fontSize: props.body.styles.fontSize }
-        : {}),
-      ...(props.body.styles.fontStyle !== "default"
-        ? { fontStyle: props.body.styles.fontStyle }
-        : {}),
-      ...(props.body.styles.fontWeight !== "default"
-        ? { fontWeight: props.body.styles.fontWeight }
-        : {}),
-      ...(props.body.styles.textTransform !== "default"
-        ? { textTransform: props.body.styles.textTransform }
-        : {}),
-    };
-    const resolvedBody = resolveComponentData(props.body.text, locale, streamDocument, {
-      richTextStyleOverrides: bodyStyleOverrides,
-    });
+    const bodyStyleOverrides = getRichTextStyleOverrides(
+      props.body.styles,
+      props.body.fontColor ?? props.cardBackgroundColor.contrastingColor,
+    );
+    const resolvedBody = resolveComponentData(
+      props.body.text,
+      locale,
+      streamDocument,
+    );
     const resolvedHeroImage = resolveComponentData(
       props.heroImage.image,
       locale,

@@ -20,7 +20,6 @@ import {
   getDefaultRTF,
   resolveComponentData,
   resolveYextEntityField,
-  toPuckFields,
   useDocument,
 } from "@yext/visual-editor";
 
@@ -165,7 +164,6 @@ const BusinessConsultingBannerComponent: PuckComponent<BusinessConsultingBannerP
     data.text,
     i18n.language,
     streamDocument,
-    { richTextStyleOverrides },
   );
 
   if (!resolvedText) {
@@ -207,7 +205,7 @@ const BusinessConsultingBannerComponent: PuckComponent<BusinessConsultingBannerP
  */
 export const BusinessConsultingBanner: YextComponentConfig<BusinessConsultingBannerProps> = {
   label: "Banner",
-  fields: toPuckFields(BusinessConsultingBannerFields),
+  fields: BusinessConsultingBannerFields,
   defaultProps: {
     data: {
       text: {

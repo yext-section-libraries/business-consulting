@@ -2,7 +2,6 @@ import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import {
   Address,
   AnalyticsScopeProvider,
@@ -28,26 +27,19 @@ import {
   type CTAVariant,
   type StyledButtonValue,
   type StyledLinkValue,
-  type StyledTextValue,
   type ThemeColor,
-  type TranslatableRichText,
   type TranslatableString,
   useDocument,
   useNearbyLocations,
   useTemplateProps,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
+import {
+  getCardStyle,
+  getRichTextStyleOverrides,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type CoverageSectionCtaProps = {
   label: YextEntityField<TranslatableString>;
@@ -306,31 +298,6 @@ const BusinessConsultingCoverageSectionFields: YextFields<BusinessConsultingCove
     },
   };
 
-const formatPhoneNumber = (
-  phoneNumberString: string,
-  format: "international" | "domestic" = "domestic",
-) => {
-  const cleanedPhoneNumberString = phoneNumberString.replace(
-    /(?!^\+)\+|[^\d+]/g,
-    "",
-  );
-  const parsedPhoneNumber = parsePhoneNumber(cleanedPhoneNumberString);
-
-  if (!parsedPhoneNumber.valid || parsedPhoneNumber.number === undefined) {
-    return phoneNumberString;
-  }
-
-  return format === "international"
-    ? parsedPhoneNumber.number.international
-    : parsedPhoneNumber.number.national;
-};
-
-const cardStyle = (backgroundColor: ThemeColor): React.CSSProperties => ({
-  ...getSurfaceColorStyle(backgroundColor),
-  borderRadius: "20px",
-  padding: "22px",
-});
-
 const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsultingCoverageSectionProps> =
   (props) => {
     const streamDocument = useDocument();
@@ -357,33 +324,14 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
 
     const resolvedHeading =
       resolveComponentData(props.heading.text, locale, streamDocument) || "";
-    const introStyleOverrides = {
-      color: getThemeColorCssValue(
-        props.intro.fontColor ?? props.section.backgroundColor.contrastingColor,
-      ),
-      ...(props.intro.styles.fontFamily !== "default"
-        ? { fontFamily: props.intro.styles.fontFamily }
-        : {}),
-      ...(props.intro.styles.fontSize !== "default"
-        ? { fontSize: props.intro.styles.fontSize }
-        : {}),
-      ...(props.intro.styles.fontStyle !== "default"
-        ? { fontStyle: props.intro.styles.fontStyle }
-        : {}),
-      ...(props.intro.styles.fontWeight !== "default"
-        ? { fontWeight: props.intro.styles.fontWeight }
-        : {}),
-      ...(props.intro.styles.textTransform !== "default"
-        ? { textTransform: props.intro.styles.textTransform }
-        : {}),
-    };
+    const introStyleOverrides = getRichTextStyleOverrides(
+      props.intro.styles,
+      props.intro.fontColor ?? props.section.backgroundColor.contrastingColor,
+    );
     const resolvedIntro = resolveComponentData(
       props.intro.text,
       locale,
       streamDocument,
-      {
-        richTextStyleOverrides: introStyleOverrides,
-      },
     );
     const resolvedCtaLabel = resolveComponentData(
       props.cta.label,
@@ -625,7 +573,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
                     <Background
                       background={props.cardBackgroundColor}
                       key={`${locationData.id || locationName}-${index}`}
-                      style={cardStyle(props.cardBackgroundColor)}
+                      style={getCardStyle(props.cardBackgroundColor, "22px")}
                     >
                       <h3
                         style={{

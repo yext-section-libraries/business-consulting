@@ -23,7 +23,6 @@ import {
   type YextCTAField,
   YextEntityField,
   YextFields,
-  ThemeOptions,
   createItemSource,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
@@ -35,22 +34,14 @@ import {
   type StyledTextValue,
   type ThemeColor,
   type TranslatableAssetImage,
-  type TranslatableRichText,
-  type TranslatableString,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  aspectRatioOptions,
+  getRichTextStyleOverrides,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type ServiceCardImage = YextEntityField<
   ImageType | ComplexImageType | TranslatableAssetImage
@@ -535,7 +526,7 @@ const BusinessConsultingServicesSectionFields: YextFields<BusinessConsultingServ
             aspectRatio: {
               label: "Aspect Ratio",
               type: "basicSelector",
-              options: ThemeOptions.ASPECT_RATIO,
+              options: aspectRatioOptions,
             },
             imageConstrain: {
               label: "Image Constrain",
@@ -568,33 +559,14 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
   const cards = serviceCardsSource.resolveItems(props.cards, streamDocument);
   const headingText =
     resolveComponentData(props.heading.text, locale, streamDocument) || "";
-  const introStyles = {
-    color: getThemeColorCssValue(
-      props.intro.fontColor ?? props.section.backgroundColor.contrastingColor,
-    ),
-    ...(props.intro.styles.fontFamily !== "default"
-      ? { fontFamily: props.intro.styles.fontFamily }
-      : {}),
-    ...(props.intro.styles.fontSize !== "default"
-      ? { fontSize: props.intro.styles.fontSize }
-      : {}),
-    ...(props.intro.styles.fontStyle !== "default"
-      ? { fontStyle: props.intro.styles.fontStyle }
-      : {}),
-    ...(props.intro.styles.fontWeight !== "default"
-      ? { fontWeight: props.intro.styles.fontWeight }
-      : {}),
-    ...(props.intro.styles.textTransform !== "default"
-      ? { textTransform: props.intro.styles.textTransform }
-      : {}),
-  };
+  const introStyles = getRichTextStyleOverrides(
+    props.intro.styles,
+    props.intro.fontColor ?? props.section.backgroundColor.contrastingColor,
+  );
   const resolvedIntro = resolveComponentData(
     props.intro.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: introStyles,
-    },
   );
 
   return (
@@ -701,35 +673,16 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                   const cardBodyStyles = props.cardStyles.body;
                   const cardCtaStyles = props.cardStyles.cta;
                   const cardImageStyles = props.cardStyles.image;
-                  const bodyStyles = {
-                    color: getThemeColorCssValue(
-                      cardBodyStyles.fontColor ??
-                        props.cardBackgroundColor.contrastingColor,
-                    ),
-                    ...(cardBodyStyles.styles.fontFamily !== "default"
-                      ? { fontFamily: cardBodyStyles.styles.fontFamily }
-                      : {}),
-                    ...(cardBodyStyles.styles.fontSize !== "default"
-                      ? { fontSize: cardBodyStyles.styles.fontSize }
-                      : {}),
-                    ...(cardBodyStyles.styles.fontStyle !== "default"
-                      ? { fontStyle: cardBodyStyles.styles.fontStyle }
-                      : {}),
-                    ...(cardBodyStyles.styles.fontWeight !== "default"
-                      ? { fontWeight: cardBodyStyles.styles.fontWeight }
-                      : {}),
-                    ...(cardBodyStyles.styles.textTransform !== "default"
-                      ? { textTransform: cardBodyStyles.styles.textTransform }
-                      : {}),
-                  };
+                  const bodyStyles = getRichTextStyleOverrides(
+                    cardBodyStyles.styles,
+                    cardBodyStyles.fontColor ??
+                      props.cardBackgroundColor.contrastingColor,
+                  );
                   const resolvedBody = card.body?.text
                     ? resolveComponentData(
                         card.body.text,
                         locale,
                         streamDocument,
-                        {
-                          richTextStyleOverrides: bodyStyles,
-                        },
                       )
                     : undefined;
                   const resolvedImage = card.image;

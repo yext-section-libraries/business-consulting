@@ -2,7 +2,6 @@ import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import {
   AnalyticsScopeProvider,
   Address,
@@ -28,33 +27,18 @@ import {
   type ComprehensiveCTAValue,
   type StyledTextValue,
   type ThemeColor,
-  type TranslatableRichText,
   type TranslatableString,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type PhoneItemProps = {
-  number: YextEntityField<string>;
-  label?: YextEntityField<TranslatableString>;
-};
-
-type PhoneFieldProps = {
-  items: PhoneItemProps[];
-  phoneFormat: "international" | "domestic";
-  includeHyperlink?: boolean;
-};
+import { formatPhoneNumber } from "@yext/visual-editor/section-library-support";
+import {
+  getCardStyle,
+  getRichTextStyleOverrides,
+  type PhoneFieldProps,
+  type PhoneItemProps,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type HoursStyles = {
   startOfWeek: "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday" | "today";
@@ -425,28 +409,6 @@ const BusinessConsultingDetailsSectionFields: YextFields<BusinessConsultingDetai
     },
   };
 
-const formatPhone = (
-  value: string,
-  format: "international" | "domestic" = "domestic",
-) => {
-  const parsed = parsePhoneNumber(
-    value.replace(/(?!^\+)\+|[^\d+]/g, ""),
-  );
-  if (!parsed.valid || parsed.number === undefined) {
-    return value;
-  }
-
-  return format === "international"
-    ? parsed.number.international
-    : parsed.number.national;
-};
-
-const cardStyle = (backgroundColor: ThemeColor): React.CSSProperties => ({
-  ...getSurfaceColorStyle(backgroundColor),
-  borderRadius: "20px",
-  padding: "24px",
-});
-
 const defaultDetailsLabelStyles: StyledTextValue = {
   fontFamily: "default",
   fontSize: "default",
@@ -728,7 +690,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
         return {
           label: normalizedLabel,
           originalNumber: normalizedNumber,
-          formattedNumber: formatPhone(
+          formattedNumber: formatPhoneNumber(
             normalizedNumber,
             props.bookingPhone.phoneFormat,
           ),
@@ -749,33 +711,14 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
           numberField: YextEntityField<string>;
         } => item !== null,
       );
-    const noteStyleOverrides = {
-      color: getThemeColorCssValue(
-        props.detailsNote.fontColor ?? props.cardBackgroundColor.contrastingColor,
-      ),
-      ...(props.detailsNote.styles.fontFamily !== "default"
-        ? { fontFamily: props.detailsNote.styles.fontFamily }
-        : {}),
-      ...(props.detailsNote.styles.fontSize !== "default"
-        ? { fontSize: props.detailsNote.styles.fontSize }
-        : {}),
-      ...(props.detailsNote.styles.fontStyle !== "default"
-        ? { fontStyle: props.detailsNote.styles.fontStyle }
-        : {}),
-      ...(props.detailsNote.styles.fontWeight !== "default"
-        ? { fontWeight: props.detailsNote.styles.fontWeight }
-        : {}),
-      ...(props.detailsNote.styles.textTransform !== "default"
-        ? { textTransform: props.detailsNote.styles.textTransform }
-        : {}),
-    };
+    const noteStyleOverrides = getRichTextStyleOverrides(
+      props.detailsNote.styles,
+      props.detailsNote.fontColor ?? props.cardBackgroundColor.contrastingColor,
+    );
     const resolvedNote = resolveComponentData(
       props.detailsNote.text,
       locale,
       streamDocument,
-      {
-        richTextStyleOverrides: noteStyleOverrides,
-      },
     );
     const resolvedHours = resolveComponentData(
       props.hours,
@@ -884,7 +827,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
               >
                 <Background
                   background={props.cardBackgroundColor}
-                  style={cardStyle(props.cardBackgroundColor)}
+                  style={getCardStyle(props.cardBackgroundColor, "24px")}
                 >
                   <EntityField
                     displayName="Location Information"
@@ -1022,7 +965,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
                     </EntityField>
                   </div>
                 </Background>
-                <article style={cardStyle(props.cardBackgroundColor)}>
+                <article style={getCardStyle(props.cardBackgroundColor, "24px")}>
                   <EntityField
                     displayName="Service Hours Heading"
                     fieldId={detailsLabels.serviceHours.text.field}
@@ -1078,7 +1021,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
                     </div>
                   </EntityField>
                 </article>
-                <article style={cardStyle(props.cardBackgroundColor)}>
+                <article style={getCardStyle(props.cardBackgroundColor, "24px")}>
                   <EntityField
                     displayName="Complimentary Services Heading"
                     fieldId={detailsLabels.complimentaryServices.text.field}

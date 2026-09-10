@@ -8,7 +8,6 @@ import {
   EntityField,
   VisibilityWrapper,
   YextComponentConfig,
-  YextEntityField,
   YextFields,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
@@ -17,16 +16,10 @@ import {
   resolveComponentData,
   type StyledTextValue,
   type ThemeColor,
-  type TranslatableString,
   useDocument,
   useTemplateProps,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import type { StyledTextProps } from "../shared/sectionHelpers";
 
 type BreadcrumbDocument = {
   locale?: string;

@@ -24,25 +24,15 @@ import {
   resolveComponentData,
   type ComprehensiveCTAValue,
   type StyledImageValue,
-  type StyledTextValue,
   type ThemeColor,
   type TranslatableAssetImage,
-  type TranslatableRichText,
-  type TranslatableString,
   useDocument,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import type {
+  StyledRtfProps,
+  StyledTextProps,
+} from "../shared/sectionHelpers";
+import { getRichTextStyleOverrides } from "../shared/sectionHelpers";
 
 type PromoImageField = {
   image: YextEntityField<ImageType | ComplexImageType | TranslatableAssetImage>;
@@ -302,33 +292,14 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
   const locale = streamDocument.locale ?? "en";
   const resolvedHeading =
     resolveComponentData(props.heading.text, locale, streamDocument) || "";
-  const bodyStyleOverrides = {
-    color: getThemeColorCssValue(
-      props.body.fontColor ?? props.panelBackgroundColor.contrastingColor,
-    ),
-    ...(props.body.styles.fontFamily !== "default"
-      ? { fontFamily: props.body.styles.fontFamily }
-      : {}),
-    ...(props.body.styles.fontSize !== "default"
-      ? { fontSize: props.body.styles.fontSize }
-      : {}),
-    ...(props.body.styles.fontStyle !== "default"
-      ? { fontStyle: props.body.styles.fontStyle }
-      : {}),
-    ...(props.body.styles.fontWeight !== "default"
-      ? { fontWeight: props.body.styles.fontWeight }
-      : {}),
-    ...(props.body.styles.textTransform !== "default"
-      ? { textTransform: props.body.styles.textTransform }
-      : {}),
-  };
+  const bodyStyleOverrides = getRichTextStyleOverrides(
+    props.body.styles,
+    props.body.fontColor ?? props.panelBackgroundColor.contrastingColor,
+  );
   const resolvedBody = resolveComponentData(
     props.body.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: bodyStyleOverrides,
-    },
   );
   const resolvedImage = resolveComponentData(
     props.image.image,
