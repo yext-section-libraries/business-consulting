@@ -8,6 +8,7 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   type ComprehensiveCTAValue,
@@ -74,38 +75,38 @@ type ServiceCard = {
 };
 
 const serviceCardsSource = createItemSource<ServiceCard>({
-  label: "Service Cards",
+  label: msg("fields.serviceCards", "Service Cards"),
   mappingFields: {
     title: {
-      label: "Title",
+      label: msg("fields.title", "Title"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: { types: ["type.string"] },
         },
       },
     },
     body: {
-      label: "Body",
+      label: msg("fields.body", "Body"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: { types: ["type.rich_text_v2"] },
         },
       },
     },
     cta: {
-      label: "Call to Action",
+      label: msg("fields.callToAction", "Call to Action"),
       type: "entityField",
       filter: { types: ["type.cta"] },
     },
     image: {
       type: "entityField",
-      label: "Image",
+      label: msg("fields.image", "Image"),
       filter: { types: ["type.image"] },
     },
   },
@@ -388,63 +389,63 @@ const defaultCardCtaStyles: SharedCardCtaStyles = {
 const BusinessConsultingServicesSectionFields: YextFields<BusinessConsultingServicesSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     intro: {
-      label: "Intro",
+      label: msg("fields.intro", "Intro"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.rich_text_v2"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
@@ -452,92 +453,92 @@ const BusinessConsultingServicesSectionFields: YextFields<BusinessConsultingServ
     },
     cards: serviceCardsSource.field,
     cardStyles: {
-      label: "Card Styles",
+      label: msg("fields.cardStyles", "Card Styles"),
       type: "object",
       objectFields: {
         title: {
-          label: "Title",
+          label: msg("fields.title", "Title"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         body: {
-          label: "Body",
+          label: msg("fields.body", "Body"),
           type: "object",
           objectFields: {
             styles: {
-              label: "Text Styles",
+              label: msg("fields.textStyles", "Text Styles"),
               type: "styledText",
             },
             fontColor: {
-              label: "Font Color",
+              label: msg("fields.fontColor", "Font Color"),
               type: "basicSelector",
               options: "SITE_COLOR",
             },
           },
         },
         cta: {
-          label: "CTA",
+          label: msg("fields.cta", "CTA"),
           type: "object",
           objectFields: {
             variant: {
-              label: "Variant",
+              label: msg("fields.variant", "Variant"),
               type: "select",
               options: [
-                { label: "Primary", value: "primary" },
-                { label: "Secondary", value: "secondary" },
-                { label: "Link", value: "link" },
+                { label: msg("fields.options.primary", "Primary"), value: "primary" },
+                { label: msg("fields.options.secondary", "Secondary"), value: "secondary" },
+                { label: msg("fields.options.link", "Link"), value: "link" },
               ],
             },
             presetImage: {
-              label: "Preset Image",
+              label: msg("fields.presetImage", "Preset Image"),
               type: "basicSelector",
               options: "PRESET_IMAGE",
             },
             color: {
-              label: "Color",
+              label: msg("fields.color", "Color"),
               type: "basicSelector",
               options: "BACKGROUND_COLOR",
             },
             button: {
-              label: "Button Styles",
+              label: msg("fields.buttonStyles", "Button Styles"),
               type: "styledButton",
             },
             link: {
-              label: "Link Styles",
+              label: msg("fields.linkStyles", "Link Styles"),
               type: "styledLink",
               showIncludeCaretField: false,
             },
           },
         },
         image: {
-          label: "Image",
+          label: msg("fields.image", "Image"),
           type: "object",
           objectFields: {
             aspectRatio: {
-              label: "Aspect Ratio",
+              label: msg("fields.options.aspectRatio", "Aspect Ratio"),
               type: "basicSelector",
               options: aspectRatioOptions,
             },
             imageConstrain: {
-              label: "Image Constrain",
+              label: msg("fields.imageConstrain", "Image Constrain"),
               type: "select",
               options: [
-                { label: "Fixed", value: "fixed" },
-                { label: "Filled", value: "filled" },
+                { label: msg("fields.options.fixed", "Fixed"), value: "fixed" },
+                { label: msg("fields.options.filled", "Filled"), value: "filled" },
               ],
             },
             styles: {
-              label: "Image Styles",
+              label: msg("fields.imageStyles", "Image Styles"),
               type: "styledImage",
             },
           },
@@ -545,7 +546,7 @@ const BusinessConsultingServicesSectionFields: YextFields<BusinessConsultingServ
       },
     },
     cardBackgroundColor: {
-      label: "Card Background Color",
+      label: msg("fields.cardBackgroundColor", "Card Background Color"),
       type: "basicSelector",
       options: "BACKGROUND_COLOR",
     },
@@ -899,7 +900,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
 
 export const BusinessConsultingServicesSection: YextComponentConfig<BusinessConsultingServicesSectionProps> =
   {
-    label: "Services Section",
+    label: msg("components.servicesSection", "Services Section"),
     fields: BusinessConsultingServicesSectionFields,
     defaultProps: {
       heading: {

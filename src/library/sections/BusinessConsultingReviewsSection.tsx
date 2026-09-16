@@ -3,7 +3,9 @@ import type { SectionConfig } from "@yext/visual-editor";
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { AnalyticsScopeProvider } from "@yext/pages-components";
+import { useTranslation } from "react-i18next";
 import {
+  msg,
   Background,
   EntityField,
   VisibilityWrapper,
@@ -151,85 +153,85 @@ const reviewsSectionScopedTypographyStyles = `
 const BusinessConsultingReviewsSectionFields: YextFields<BusinessConsultingReviewsSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     responseLabel: {
-      label: "Response Label",
+      label: msg("fields.responseLabel", "Response Label"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     summaryTextColor: {
-      label: "Summary Text Color",
+      label: msg("fields.summaryTextColor", "Summary Text Color"),
       type: "basicSelector",
       options: "SITE_COLOR",
     },
     reviewTextColor: {
-      label: "Review Text Color",
+      label: msg("fields.reviewTextColor", "Review Text Color"),
       type: "basicSelector",
       options: "SITE_COLOR",
     },
     starColor: {
-      label: "Star Color",
+      label: msg("fields.starColor", "Star Color"),
       type: "basicSelector",
       options: "SITE_COLOR",
     },
     cardBackgroundColor: {
-      label: "Card Background Color",
+      label: msg("fields.cardBackgroundColor", "Card Background Color"),
       type: "basicSelector",
       options: "BACKGROUND_COLOR",
     },
@@ -265,32 +267,30 @@ const defaultStarColor: ThemeColor = {
   contrastingColor: "palette-primary-contrast",
 };
 
-const editorFallbackReviews: ReviewRecord[] = [
+const getEditorFallbackReviews = (content: string): ReviewRecord[] => [
   {
     authorName: "Maya T.",
     rating: 5,
     reviewDate: "2026-01-18",
-    content:
-      "This is a placeholder review because this location doesn’t have any reviews yet.",
+    content,
   },
   {
     authorName: "Jordan R.",
     rating: 5,
     reviewDate: "2026-02-07",
-    content:
-      "This is a placeholder review because this location doesn’t have any reviews yet.",
+    content,
   },
   {
     authorName: "Alex P.",
     rating: 4,
     reviewDate: "2026-03-11",
-    content:
-      "This is a placeholder review because this location doesn’t have any reviews yet.",
+    content,
   },
 ];
 
 const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultingReviewsSectionProps> =
   (props) => {
+    const { t } = useTranslation();
     const streamDocument = useDocument<ReviewDocument>();
     const locale = streamDocument.locale ?? "en";
     const { averageRating, reviewCount } = getAggregateRating(streamDocument);
@@ -302,7 +302,12 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
       reviews.length > 0
         ? reviews
         : props.puck.isEditing
-          ? editorFallbackReviews
+          ? getEditorFallbackReviews(
+              t(
+                "placeholderReview",
+                "This is a placeholder review because this location doesn’t have any reviews yet.",
+              ),
+            )
           : [];
     const responseLabel = props.responseLabel ?? defaultResponseLabel;
     const resolvedHeading =
@@ -390,7 +395,7 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
             <div style={{ margin: "0 auto", maxWidth: "1280px" }}>
               <div style={{ textAlign: "center" }}>
                 <EntityField
-                  displayName="Heading"
+                  displayName={t("heading", "Heading")}
                   fieldId={props.heading.text.field}
                   constantValueEnabled={props.heading.text.constantValueEnabled}
                 >
@@ -423,7 +428,11 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                 typeof reviewCount === "number" ? (
                   <p style={{ color: summaryTextColor, marginTop: "12px" }}>
                     <span style={{ color: starColor }}>{renderStars(averageRating)}</span>{" "}
-                    {`${averageRating} stars from ${reviewCount} pet parent reviews`}
+                    {t(
+                      "petParentReviewSummary",
+                      "{{averageRating}} stars from {{reviewCount}} pet parent reviews",
+                      { averageRating, reviewCount },
+                    )}
                   </p>
                 ) : null}
               </div>
@@ -449,7 +458,11 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                     >
                       <p style={{ color: reviewTextColor, margin: 0 }}>
                         <span style={{ color: starColor }}>{renderStars(review.rating ?? 5)}</span>{" "}
-                        {`${review.rating ?? 5}/5 stars`}
+                        {t(
+                          "ratingOutOfFiveStars",
+                          "{{rating}}/5 stars",
+                          { rating: review.rating ?? 5 },
+                        )}
                       </p>
                       <p style={{ color: reviewTextColor, fontWeight: 600, margin: "14px 0 10px" }}>{review.authorName}</p>
                       {review.reviewDate ? (
@@ -477,7 +490,10 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                           }}
                         >
                           <EntityField
-                            displayName="Response Label"
+                            displayName={t(
+                              "responseLabel",
+                              "Response Label",
+                            )}
                             fieldId={responseLabel.text.field}
                             constantValueEnabled={
                               responseLabel.text.constantValueEnabled
@@ -508,7 +524,7 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
 
 export const BusinessConsultingReviewsSection: YextComponentConfig<BusinessConsultingReviewsSectionProps> =
   {
-    label: "Reviews Section",
+    label: msg("components.reviewsSection", "Reviews Section"),
     fields: BusinessConsultingReviewsSectionFields,
     defaultProps: {
       heading: {
