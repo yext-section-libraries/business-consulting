@@ -1179,7 +1179,7 @@ const BusinessConsultingHeaderSectionComponent: PuckComponent<
 
 export const BusinessConsultingHeaderSection: YextComponentConfig<BusinessConsultingHeaderSectionProps> =
   {
-    label: msg("components.sharedHeader", "Shared Header"),
+    label: msg("components.sharedHeader", "Header"),
     fields: BusinessConsultingHeaderSectionFields,
     defaultProps: {
       variant: "logoLeftInlineNav",
