@@ -8,6 +8,7 @@ import {
   type ImageType,
 } from "@yext/pages-components";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -54,76 +55,76 @@ export type BusinessConsultingAboutSectionProps = {
 const BusinessConsultingAboutSectionFields: YextFields<BusinessConsultingAboutSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: { types: ["type.string"] },
         },
-        styles: { label: "Text Styles", type: "styledText" },
+        styles: { label: msg("fields.textStyles", "Text Styles"), type: "styledText" },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     body: {
-      label: "Body",
+      label: msg("fields.body", "Body"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: { types: ["type.rich_text_v2"] },
         },
-        styles: { label: "Text Styles", type: "styledText" },
+        styles: { label: msg("fields.textStyles", "Text Styles"), type: "styledText" },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     image: {
-      label: "Image",
+      label: msg("fields.image", "Image"),
       type: "object",
       objectFields: {
         image: {
           type: "entityField",
-          label: "Image",
+          label: msg("fields.image", "Image"),
           filter: { types: ["type.image"] },
         },
-        styles: { label: "Image Styles", type: "styledImage" },
+        styles: { label: msg("fields.imageStyles", "Image Styles"), type: "styledImage" },
       },
     },
     cta: {
-      label: "Call to Action",
+      label: msg("fields.callToAction", "Call to Action"),
       type: "comprehensiveCTA",
     },
     panelBackgroundColor: {
-      label: "Panel Background Color",
+      label: msg("fields.panelBackgroundColor", "Panel Background Color"),
       type: "basicSelector",
       options: "BACKGROUND_COLOR",
     },
@@ -478,7 +479,7 @@ const BusinessConsultingAboutSectionComponent: PuckComponent<
 
 export const BusinessConsultingAboutSection: YextComponentConfig<BusinessConsultingAboutSectionProps> =
   {
-    label: "About Section",
+    label: msg("components.aboutSection", "About Section"),
     fields: BusinessConsultingAboutSectionFields,
     defaultProps: {
       heading: {

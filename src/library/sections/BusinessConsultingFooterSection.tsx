@@ -9,6 +9,7 @@ import {
   type AddressType,
 } from "@yext/pages-components";
 import {
+  msg,
   Background,
   EntityField,
   VisibilityWrapper,
@@ -54,79 +55,79 @@ export type BusinessConsultingFooterSectionProps = {
 const BusinessConsultingFooterSectionFields: YextFields<BusinessConsultingFooterSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     brandText: {
-      label: "Brand Text",
+      label: msg("fields.brandText", "Brand Text"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: {
             types: ["type.string"],
           },
         },
         styles: {
-          label: "Text Styles",
+          label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
         },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     links: {
-      label: "Links",
+      label: msg("fields.links", "Links"),
       type: "array",
       arrayFields: {
         label: {
-          label: "Label",
+          label: msg("fields.label", "Label"),
           type: "entityField",
           filter: {
             types: ["type.string"],
           },
         },
         link: {
-          label: "Link",
+          label: msg("fields.link", "Link"),
           type: "entityField",
           filter: {
             types: ["type.string"],
           },
         },
         linkType: {
-          label: "Link Type",
+          label: msg("fields.linkType", "Link Type"),
           type: "select",
           options: [
-            { label: "URL", value: "URL" },
-            { label: "Email", value: "EMAIL" },
-            { label: "Phone", value: "PHONE" },
+            { label: msg("fields.options.url", "URL"), value: "URL" },
+            { label: msg("fields.options.email", "Email"), value: "EMAIL" },
+            { label: msg("fields.options.phone", "Phone"), value: "PHONE" },
           ],
         },
         openInNewTab: {
-          label: "Open in New Tab",
+          label: msg("fields.openInNewTabLabel", "Open in New Tab"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
       },
@@ -155,44 +156,44 @@ const BusinessConsultingFooterSectionFields: YextFields<BusinessConsultingFooter
     },
     address: {
       type: "entityField",
-      label: "Address",
+      label: msg("fields.address", "Address"),
       filter: {
         types: ["type.address"],
       },
     },
     showRegion: {
-      label: "Show Region",
+      label: msg("fields.showRegion", "Show Region"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
     showCountry: {
-      label: "Show Country",
+      label: msg("fields.showCountry", "Show Country"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
     phone: {
-      label: "Phone",
+      label: msg("fields.phone", "Phone"),
       type: "object",
       objectFields: {
         items: {
-          label: "Items",
+          label: msg("fields.items", "Items"),
           type: "array",
           arrayFields: {
             number: {
               type: "entityField",
-              label: "Number",
+              label: msg("fields.number", "Number"),
               filter: {
                 types: ["type.phone"],
               },
             },
             label: {
-              label: "Label",
+              label: msg("fields.label", "Label"),
               type: "entityField",
               filter: {
                 types: ["type.string"],
@@ -223,52 +224,58 @@ const BusinessConsultingFooterSectionFields: YextFields<BusinessConsultingFooter
             "Phone",
         },
         phoneFormat: {
-          label: "Phone Format",
+          label: msg("fields.phoneFormat", "Phone Format"),
           type: "radio",
           options: [
-            { label: "Domestic", value: "domestic" },
-            { label: "International", value: "international" },
+            {
+              label: msg("fields.options.domestic", "Domestic"),
+              value: "domestic",
+            },
+            {
+              label: msg("fields.options.international", "International"),
+              value: "international",
+            },
           ],
         },
         includeHyperlink: {
-          label: "Include Hyperlink",
+          label: msg("fields.includeHyperlink", "Include Hyperlink"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
       },
     },
     websiteLink: {
-      label: "Website Link",
+      label: msg("fields.websiteLink", "Website Link"),
       type: "object",
       objectFields: {
         label: {
-          label: "Label",
+          label: msg("fields.label", "Label"),
           type: "entityField",
           filter: { types: ["type.string"] },
         },
         link: {
-          label: "Link",
+          label: msg("fields.link", "Link"),
           type: "entityField",
           filter: { types: ["type.string"] },
         },
         linkType: {
-          label: "Link Type",
+          label: msg("fields.linkType", "Link Type"),
           type: "select",
           options: [
-            { label: "URL", value: "URL" },
-            { label: "Email", value: "EMAIL" },
-            { label: "Phone", value: "PHONE" },
+            { label: msg("fields.options.url", "URL"), value: "URL" },
+            { label: msg("fields.options.email", "Email"), value: "EMAIL" },
+            { label: msg("fields.options.phone", "Phone"), value: "PHONE" },
           ],
         },
         openInNewTab: {
-          label: "Open in New Tab",
+          label: msg("fields.openInNewTabLabel", "Open in New Tab"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
       },
@@ -543,7 +550,9 @@ const BusinessConsultingFooterSectionComponent: PuckComponent<
                       cta={{ link: link.link, linkType: link.linkType }}
                       eventName={`footerLink${index}`}
                       target={link.openInNewTab ? "_blank" : undefined}
-                      rel={link.openInNewTab ? "noopener noreferrer" : undefined}
+                      rel={
+                        link.openInNewTab ? "noopener noreferrer" : undefined
+                      }
                       style={{
                         color: footerForegroundColor,
                         whiteSpace: "nowrap",
@@ -616,9 +625,7 @@ const BusinessConsultingFooterSectionComponent: PuckComponent<
                 );
 
                 return (
-                  <React.Fragment
-                    key={`${item.label}-${item.originalNumber}`}
-                  >
+                  <React.Fragment key={`${item.label}-${item.originalNumber}`}>
                     {!props.phone.includeHyperlink || !item.telDigits ? (
                       <span>{content}</span>
                     ) : (
@@ -682,7 +689,7 @@ const BusinessConsultingFooterSectionComponent: PuckComponent<
 
 export const BusinessConsultingFooterSection: YextComponentConfig<BusinessConsultingFooterSectionProps> =
   {
-    label: "Footer Section",
+    label: msg("components.footerSection", "Footer Section"),
     fields: BusinessConsultingFooterSectionFields,
     defaultProps: {
       brandText: {
@@ -824,14 +831,12 @@ export const BusinessConsultingFooterSection: YextComponentConfig<BusinessConsul
         },
       },
     },
-    render: (props) => (
-      <BusinessConsultingFooterSectionComponent {...props} />
-    ),
+    render: (props) => <BusinessConsultingFooterSectionComponent {...props} />,
   };
 
 export const config: SectionConfig = {
   id: "BusinessConsultingFooterSection",
   displayName: "Footer Section",
   description: "Footer Section",
-  pageSetTypes: ["ENTITY"],
+  pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };

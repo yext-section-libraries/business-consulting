@@ -20,7 +20,6 @@ import { msg, pt } from "@yext/visual-editor/section-library-support";
 import { PhoneAtom } from "@yext/visual-editor/section-library-support";
 import { useTemplateProps } from "@yext/visual-editor/section-library-support";
 import { resolveComponentData } from "@yext/visual-editor/section-library-support";
-import { HoursStatusAtom } from "@yext/visual-editor/section-library-support";
 import { HoursTableAtom } from "@yext/visual-editor/section-library-support";
 import { type BasicSelectorField } from "@yext/visual-editor/section-library-support";
 import type {
@@ -46,6 +45,7 @@ import {
   HoursTableProps,
   HoursTableStyleFields,
 } from "../contentBlocks/HoursTable";
+import { LocalizedHoursStatus } from "../contentBlocks/HoursStatus";
 import { getImageUrl } from "../contentBlocks/image/Image";
 import {
   Accordion,
@@ -1324,7 +1324,7 @@ const HoursSection = (props: {
           <FaRegClock className="w-4 h-4" />
         </CardIcon>
       )}
-      <HoursStatusAtom
+      <LocalizedHoursStatus
         hours={hoursData ?? {}}
         comingSoon={comingSoon}
         timezone={location.timezone}

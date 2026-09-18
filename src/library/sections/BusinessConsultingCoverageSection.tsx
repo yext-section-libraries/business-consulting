@@ -2,12 +2,14 @@ import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
+import { useTranslation } from "react-i18next";
 import {
   Address,
   AnalyticsScopeProvider,
   Link,
 } from "@yext/pages-components";
 import {
+  msg,
   Background,
   ComprehensiveCTA,
   EntityField,
@@ -157,142 +159,142 @@ const coverageSectionScopedTypographyStyles = `
 const BusinessConsultingCoverageSectionFields: YextFields<BusinessConsultingCoverageSectionProps> =
   {
     section: {
-      label: "Section",
+      label: msg("fields.section", "Section"),
       type: "object",
       objectFields: {
         visibleOnLivePage: {
-          label: "Visible on Live Page",
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         backgroundColor: {
-          label: "Background Color",
+          label: msg("fields.backgroundColor", "Background Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
       },
     },
     heading: {
-      label: "Heading",
+      label: msg("fields.heading", "Heading"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: { types: ["type.string"] },
         },
-        styles: { label: "Text Styles", type: "styledText" },
+        styles: { label: msg("fields.textStyles", "Text Styles"), type: "styledText" },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     intro: {
-      label: "Intro",
+      label: msg("fields.intro", "Intro"),
       type: "object",
       objectFields: {
         text: {
           type: "entityField",
-          label: "Text",
+          label: msg("fields.text", "Text"),
           filter: { types: ["type.rich_text_v2"] },
         },
-        styles: { label: "Text Styles", type: "styledText" },
+        styles: { label: msg("fields.textStyles", "Text Styles"), type: "styledText" },
         fontColor: {
-          label: "Font Color",
+          label: msg("fields.fontColor", "Font Color"),
           type: "basicSelector",
           options: "SITE_COLOR",
         },
       },
     },
     radius: {
-      label: "Radius",
+      label: msg("fields.radius", "Radius"),
       type: "number",
     },
     limit: {
-      label: "Limit",
+      label: msg("fields.limit", "Limit"),
       type: "number",
     },
     showAddress: {
-      label: "Show Address",
+      label: msg("fields.showAddress", "Show Address"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
     showPhone: {
-      label: "Show Phone",
+      label: msg("fields.showPhone", "Show Phone"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
     showRegion: {
-      label: "Show Region",
+      label: msg("fields.showRegion", "Show Region"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
     showCountry: {
-      label: "Show Country",
+      label: msg("fields.showCountry", "Show Country"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.options.yes", "Yes"), value: true },
+        { label: msg("fields.options.no", "No"), value: false },
       ],
     },
     cta: {
-      label: "Call to Action",
+      label: msg("fields.callToAction", "Call to Action"),
       type: "object",
       objectFields: {
         label: {
           type: "entityField",
-          label: "Label",
+          label: msg("fields.label", "Label"),
           filter: { types: ["type.string"] },
         },
         openInNewTab: {
-          label: "Open In New Tab",
+          label: msg("fields.openInNewTab", "Open In New Tab"),
           type: "radio",
           options: [
-            { label: "Yes", value: true },
-            { label: "No", value: false },
+            { label: msg("fields.options.yes", "Yes"), value: true },
+            { label: msg("fields.options.no", "No"), value: false },
           ],
         },
         variant: {
-          label: "Variant",
+          label: msg("fields.variant", "Variant"),
           type: "select",
           options: [
-            { label: "Primary", value: "primary" },
-            { label: "Secondary", value: "secondary" },
-            { label: "Link", value: "link" },
+            { label: msg("fields.options.primary", "Primary"), value: "primary" },
+            { label: msg("fields.options.secondary", "Secondary"), value: "secondary" },
+            { label: msg("fields.options.link", "Link"), value: "link" },
           ],
         },
         color: {
-          label: "Color",
+          label: msg("fields.color", "Color"),
           type: "basicSelector",
           options: "BACKGROUND_COLOR",
         },
         button: {
-          label: "Button Styles",
+          label: msg("fields.buttonStyles", "Button Styles"),
           type: "styledButton",
         },
         link: {
-          label: "Link Styles",
+          label: msg("fields.linkStyles", "Link Styles"),
           type: "styledLink",
           showIncludeCaretField: false,
         },
       },
     },
     cardBackgroundColor: {
-      label: "Card Background Color",
+      label: msg("fields.cardBackgroundColor", "Card Background Color"),
       type: "basicSelector",
       options: "BACKGROUND_COLOR",
     },
@@ -300,6 +302,7 @@ const BusinessConsultingCoverageSectionFields: YextFields<BusinessConsultingCove
 
 const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsultingCoverageSectionProps> =
   (props) => {
+    const { t } = useTranslation();
     const streamDocument = useDocument();
     const { relativePrefixToRoot } = useTemplateProps<{
       relativePrefixToRoot?: string;
@@ -434,8 +437,10 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
               <style>{coverageSectionScopedTypographyStyles}</style>
               {renderSectionContent(
                 <p>
-                  Add entity coordinates and keep Radius and Limit above zero to preview
-                  nearby locations here.
+                  {t(
+                    "previewNearbyLocationsHint",
+                    "Add entity coordinates and keep Radius and Limit above zero to preview nearby locations here.",
+                  )}
                 </p>,
               )}
             </Background>
@@ -466,7 +471,11 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
               }}
             >
               <style>{coverageSectionScopedTypographyStyles}</style>
-              {renderSectionContent(<p>Loading nearby locations</p>)}
+              {renderSectionContent(
+                <p>
+                  {t("loadingNearbyLocations", "Loading nearby locations")}
+                </p>,
+              )}
             </Background>
           </AnalyticsScopeProvider>
         </VisibilityWrapper>
@@ -500,7 +509,12 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
             >
               <style>{coverageSectionScopedTypographyStyles}</style>
               {renderSectionContent(
-                <p>No nearby locations found for this location</p>,
+                <p>
+                  {t(
+                    "noNearbyLocationsFound",
+                    "No nearby locations found for this location",
+                  )}
+                </p>,
               )}
             </Background>
           </AnalyticsScopeProvider>
@@ -664,7 +678,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
 
 export const BusinessConsultingCoverageSection: YextComponentConfig<BusinessConsultingCoverageSectionProps> =
   {
-    label: "Coverage Section",
+    label: msg("components.coverageSection", "Coverage Section"),
     fields: BusinessConsultingCoverageSectionFields,
     defaultProps: {
       heading: {

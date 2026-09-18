@@ -1,14 +1,157 @@
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { PuckComponent } from "@puckeditor/core";
-import { HoursType } from "@yext/pages-components";
+import {
+  HoursStatus as HoursStatusJS,
+  type HoursType,
+  type StatusParams,
+} from "@yext/pages-components";
+import type { TFunction } from "i18next";
 import { useDocument } from "@yext/visual-editor/section-library-support";
 import { resolveComponentData } from "@yext/visual-editor/section-library-support";
 import { EntityField } from "@yext/visual-editor/section-library-support";
 import { YextEntityField } from "@yext/visual-editor/section-library-support";
 import { msg, pt } from "@yext/visual-editor/section-library-support";
-import { HoursStatusAtom } from "@yext/visual-editor/section-library-support";
+import { themeManagerCn } from "@yext/visual-editor/section-library-support";
 import { resolveDataFromParent } from "@yext/visual-editor/section-library-support";
 import { YextComponentConfig, YextFields } from "@yext/visual-editor/section-library-support";
+
+export interface LocalizedHoursStatusProps {
+  hours: HoursType;
+  className?: string;
+  comingSoon?: boolean;
+  showCurrentStatus?: boolean;
+  showDayNames?: boolean;
+  timeFormat?: "12h" | "24h";
+  dayOfWeekFormat?: "short" | "long";
+  timezone?: string;
+  boldCurrentStatus?: boolean;
+  bodyVariant?: "lg" | "base" | "sm";
+}
+
+export const LocalizedHoursStatus = React.memo(
+  ({
+    hours,
+    className,
+    comingSoon,
+    showCurrentStatus = true,
+    showDayNames = true,
+    timeFormat,
+    dayOfWeekFormat = "long",
+    timezone,
+    boldCurrentStatus = true,
+    bodyVariant = "lg",
+  }: LocalizedHoursStatusProps) => {
+    const { t, i18n } = useTranslation();
+    const classNameResolved = themeManagerCn(
+      "components mb-2 font-body-fontFamily font-body-fontWeight",
+      bodyVariant === "lg"
+        ? "text-body-lg-fontSize"
+        : bodyVariant === "sm"
+          ? "text-body-sm-fontSize"
+          : "text-body-fontSize",
+      className,
+    );
+
+    return (
+      <HoursStatusJS
+        hours={hours}
+        comingSoon={comingSoon}
+        className={classNameResolved}
+        statusTemplate={(params: StatusParams) => {
+          const isComingSoon = !!params.comingSoon;
+          const isFuture = !isOpen24h(params) && !isIndefinitelyClosed(params);
+          const interval = params.isOpen
+            ? params.currentInterval
+            : params.futureInterval;
+          const time = params.isOpen
+            ? interval?.getEndTime(i18n.language, params.timeOptions) || ""
+            : interval?.getStartTime(i18n.language, params.timeOptions) || "";
+          const showDayOfWeek = showDayNames && isFuture;
+          const intervalDate = params.isOpen ? interval?.end : interval?.start;
+          const dayOfWeek =
+            intervalDate
+              ?.setLocale(i18n.language)
+              .toLocaleString(params.dayOptions) || "";
+
+          let statusText = "";
+          if (isFuture && params.isOpen) {
+            statusText = showDayOfWeek
+              ? t(
+                  "closesAtTimeWeek",
+                  "Closes at {{time}} {{dayOfWeek}}",
+                  { time, dayOfWeek },
+                )
+              : t("closesAtTime", "Closes at {{time}}", { time });
+          } else if (isFuture) {
+            statusText = showDayOfWeek
+              ? t(
+                  "opensAtTimeWeek",
+                  "Opens at {{time}} {{dayOfWeek}}",
+                  { time, dayOfWeek },
+                )
+              : t("opensAtTime", "Opens at {{time}}", { time });
+          }
+
+          return (
+            <div className={themeManagerCn("HoursStatus", classNameResolved)}>
+              {(showCurrentStatus || isComingSoon) &&
+                renderCurrentStatus(params, t, boldCurrentStatus)}
+              {!isComingSoon && showCurrentStatus &&
+                renderStatusSeparator(params)}
+              {!isComingSoon && showCurrentStatus && statusText ? (
+                <span className="HoursStatus-future">{statusText}</span>
+              ) : null}
+            </div>
+          );
+        }}
+        dayOptions={{ weekday: dayOfWeekFormat }}
+        timeOptions={timeFormat ? { hour12: timeFormat === "12h" } : undefined}
+        timezone={timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone}
+      />
+    );
+  },
+);
+
+function renderCurrentStatus(
+  params: StatusParams,
+  t: TFunction,
+  boldCurrentStatus: boolean,
+): React.ReactNode {
+  const style = boldCurrentStatus ? { fontWeight: "bolder" } : undefined;
+  let status = params.isOpen
+    ? t("openNow", "Open Now")
+    : t("closed", "Closed");
+
+  if (params.comingSoon) {
+    status = t("comingSoon", "Coming Soon");
+  } else if (isOpen24h(params)) {
+    status = t("open24Hours", "Open 24 Hours");
+  } else if (isIndefinitelyClosed(params)) {
+    status = t("temporarilyClosed", "Temporarily Closed");
+  }
+
+  return (
+    <span className="HoursStatus-current" style={style}>
+      {status}
+    </span>
+  );
+}
+
+function isOpen24h(params: StatusParams): boolean {
+  return params.currentInterval?.is24h?.() || false;
+}
+
+function isIndefinitelyClosed(params: StatusParams): boolean {
+  return !params.futureInterval;
+}
+
+function renderStatusSeparator(params: StatusParams): React.ReactNode {
+  if (isOpen24h(params) || isIndefinitelyClosed(params)) {
+    return null;
+  }
+  return <span className="HoursStatus-separator"> • </span>;
+}
 
 export interface HoursStatusProps {
   data: {
@@ -114,7 +257,7 @@ const HoursStatusWrapper: PuckComponent<HoursStatusProps> = ({
       fieldId={data.hours.field}
       constantValueEnabled={!parentData && data.hours.constantValueEnabled}
     >
-      <HoursStatusAtom
+      <LocalizedHoursStatus
         hours={hours ?? {}}
         comingSoon={comingSoon}
         timezone={timezone}
