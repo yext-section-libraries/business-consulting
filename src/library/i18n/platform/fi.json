@@ -35,11 +35,13 @@
     "servicesSection": "Palveluosio",
     "sharedHeader": "Jaettu ylätunniste"
   },
+  "currentLocation": "Nykyinen sijainti",
   "customSearchArea": "Mukautettu hakualue",
   "distance": "Etäisyys",
   "distanceLineFromSearch": "<strong>{{distance}}</strong> hausta",
   "distanceLineFromSearchLocation": "<strong>{{distance}}</strong> alkaen {{searchLocation}}",
   "distanceLineFromYou": "<strong>{{distance}}</strong> sinulta",
+  "email": "Sähköposti",
   "enableCookies": "Ota evästeet käyttöön",
   "fields": {
     "accentColor": "Aksenttiväri",

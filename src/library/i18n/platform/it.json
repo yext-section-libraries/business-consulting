@@ -35,11 +35,13 @@
     "servicesSection": "Sezione Servizi",
     "sharedHeader": "Intestazione condivisa"
   },
+  "currentLocation": "Posizione attuale",
   "customSearchArea": "Area di ricerca personalizzata",
   "distance": "Distanza",
   "distanceLineFromSearch": "<strong>{{distance}}</strong> dalla ricerca",
   "distanceLineFromSearchLocation": "<strong>{{distance}}</strong> da {{searchLocation}}",
   "distanceLineFromYou": "<strong>{{distance}}</strong> da te",
+  "email": "E-mail",
   "enableCookies": "Abilita i cookie",
   "fields": {
     "accentColor": "Colore accento",
