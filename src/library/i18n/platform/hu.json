@@ -35,11 +35,13 @@
     "servicesSection": "Szolgáltatások szakasz",
     "sharedHeader": "Megosztott fejléc"
   },
+  "currentLocation": "Jelenlegi hely",
   "customSearchArea": "Egyedi keresési terület",
   "distance": "Távolság",
   "distanceLineFromSearch": "<strong>{{distance}}</strong> a keresésből",
   "distanceLineFromSearchLocation": "<strong>{{distance}}</strong> od {{searchLocation}}",
   "distanceLineFromYou": "<strong>{{distance}}</strong>",
+  "email": "Email",
   "enableCookies": "Cookie-k engedélyezése",
   "fields": {
     "accentColor": "Kiemelt szín",
