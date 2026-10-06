@@ -1,3 +1,7 @@
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import "../shared/typography.css";
+import { useTranslation } from "react-i18next";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -7,7 +11,6 @@ import {
   msg,
   Background,
   EntityField,
-  MaybeRTF,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
@@ -176,8 +179,8 @@ const defaultFaqItemStyles: FaqItemStyles = {
   question: {
     styles: {
       fontFamily: "default",
-      fontSize: "16px",
-      fontWeight: "600",
+      fontSize: "default",
+      fontWeight: "default",
       fontStyle: "default",
       textTransform: "default",
     },
@@ -195,85 +198,58 @@ const defaultFaqItemStyles: FaqItemStyles = {
 
 const faqSectionScopedTypographyStyles = `
   [data-scope="${faqSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
+
   }
 
   [data-scope="${faqSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 `;
@@ -370,7 +346,8 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
 > = (props) => {
   const analytics = useAnalytics();
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const items = faqItemsSource.resolveItems(props.items, streamDocument);
   const defaultOpenIndex = items.length > 0 ? 0 : -1;
   const resolvedHeading =
@@ -416,21 +393,7 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
                   ),
                   margin: "0 0 28px",
                   textAlign: "center",
-                  ...(props.heading.styles.fontFamily !== "default"
-                    ? { fontFamily: props.heading.styles.fontFamily }
-                    : {}),
-                  ...(props.heading.styles.fontSize !== "default"
-                    ? { fontSize: props.heading.styles.fontSize }
-                    : {}),
-                  ...(props.heading.styles.fontStyle !== "default"
-                    ? { fontStyle: props.heading.styles.fontStyle }
-                    : {}),
-                  ...(props.heading.styles.fontWeight !== "default"
-                    ? { fontWeight: props.heading.styles.fontWeight }
-                    : {}),
-                  ...(props.heading.styles.textTransform !== "default"
-                    ? { textTransform: props.heading.styles.textTransform }
-                    : {}),
+                  ...resolveTextStyles(props.heading.styles),
                 }}
               >
                 {resolvedHeading}
@@ -481,6 +444,7 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
                       }}
                     >
                       <button
+                        className="ybc-body"
                         type="button"
                         onClick={() => {
                           const nextValue = isOpen ? -1 : index;
@@ -500,29 +464,14 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
                           ),
                           cursor: "pointer",
                           display: "flex",
-                          fontFamily:
-                            questionStyles.styles.fontFamily === "default"
-                              ? undefined
-                              : questionStyles.styles.fontFamily,
-                          fontSize:
-                            questionStyles.styles.fontSize === "default"
-                              ? undefined
-                              : questionStyles.styles.fontSize,
-                          fontStyle:
-                            questionStyles.styles.fontStyle === "default"
-                              ? undefined
-                              : questionStyles.styles.fontStyle,
-                          fontWeight:
-                            questionStyles.styles.fontWeight === "default"
-                              ? undefined
-                              : questionStyles.styles.fontWeight,
+                          fontFamily: resolveTextStyles(questionStyles.styles).fontFamily,
+                          fontSize: resolveTextStyles(questionStyles.styles).fontSize,
+                          fontStyle: resolveTextStyles(questionStyles.styles).fontStyle,
+                          fontWeight: resolveTextStyles(questionStyles.styles).fontWeight,
                           justifyContent: "space-between",
                           padding: "20px",
                           textAlign: "left",
-                          textTransform:
-                            questionStyles.styles.textTransform === "default"
-                              ? undefined
-                              : questionStyles.styles.textTransform,
+                          textTransform: resolveTextStyles(questionStyles.styles).textTransform,
                           width: "100%",
                         }}
                       >
@@ -535,18 +484,7 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
                             padding: "0 20px 20px",
                           }}
                         >
-                          {React.isValidElement(resolvedAnswer) ? (
-                            resolvedAnswer
-                          ) : (
-                            <MaybeRTF
-                              data={
-                                typeof resolvedAnswer === "string"
-                                  ? resolvedAnswer
-                                  : ""
-                              }
-                              richTextStyleOverrides={answerStyleOverrides}
-                            />
-                          )}
+                          <ResolvedRichText content={resolvedAnswer} overrides={answerStyleOverrides} />
                         </div>
                       ) : null}
                     </article>
@@ -563,7 +501,7 @@ const BusinessConsultingFaqSectionComponent: PuckComponent<
 
 export const BusinessConsultingFaqSection: YextComponentConfig<BusinessConsultingFaqSectionProps> =
   {
-    label: msg("components.faqSection", "Faq Section"),
+    label: msg("components.faqLabel", "Faq"),
     fields: BusinessConsultingFaqSectionFields,
     defaultProps: {
       heading: {
@@ -602,7 +540,7 @@ export const BusinessConsultingFaqSection: YextComponentConfig<BusinessConsultin
 
 export const config: SectionConfig = {
   id: "BusinessConsultingFaqSection",
-  displayName: "Faq Section",
+  displayName: "Faq",
   description: "Faq Section",
   pageSetTypes: ["ENTITY"],
 };

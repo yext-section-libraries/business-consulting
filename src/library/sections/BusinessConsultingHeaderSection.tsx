@@ -1,3 +1,5 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -185,12 +187,11 @@ const getTextStyles = ({
 }): React.CSSProperties => {
   return {
     color: getThemeColorCssValue(color),
-    fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-    fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-    fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-    fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-    textTransform:
-      styles.textTransform === "default" ? undefined : styles.textTransform,
+    fontFamily: resolveTextStyles(styles).fontFamily,
+    fontSize: resolveTextStyles(styles).fontSize,
+    fontWeight: resolveTextStyles(styles).fontWeight,
+    fontStyle: resolveTextStyles(styles).fontStyle,
+    textTransform: resolveTextStyles(styles).textTransform,
     letterSpacing:
       styles.letterSpacing === "default" ? undefined : styles.letterSpacing,
   };
@@ -609,10 +610,10 @@ const BusinessConsultingHeaderSectionFields: YextFields<BusinessConsultingHeader
 const BusinessConsultingHeaderSectionComponent: PuckComponent<
   BusinessConsultingHeaderSectionProps
 > = (props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const analytics = useAnalytics();
   const streamDocument = useDocument<StreamDocument>();
-  const locale = streamDocument.locale ?? "en";
+  const locale = i18n.language;
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const resolvedLogoImage = resolveComponentData(
@@ -1006,7 +1007,7 @@ const BusinessConsultingHeaderSectionComponent: PuckComponent<
       <Background
         as="header"
         background={props.section.backgroundColor}
-        className="relative"
+        className="ybc-typography relative"
         style={{
           ...headerSurfaceStyle,
           ...(getThemeColorCssValue(navigationColor)
@@ -1327,7 +1328,7 @@ export const BusinessConsultingHeaderSection: YextComponentConfig<BusinessConsul
 
 export const config: SectionConfig = {
   id: "BusinessConsultingHeaderSection",
-  displayName: "Header Section",
+  displayName: "Header",
   description: "Header Section",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };

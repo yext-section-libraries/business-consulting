@@ -1,3 +1,6 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -15,7 +18,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
@@ -244,8 +246,7 @@ const buttonBaseStyle: React.CSSProperties = {
   alignItems: "center",
   borderRadius: "999px",
   display: "inline-flex",
-  fontSize: "13.1px",
-  fontWeight: 600,
+
   justifyContent: "center",
   minHeight: "53px",
   padding: "15px 17px",
@@ -269,9 +270,9 @@ const heroSectionScopedTypographyStyles =
 
 const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHeroSectionProps> =
   (props) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const streamDocument = useDocument();
-    const locale = streamDocument.locale ?? "en";
+    const locale = i18n.language;
     const statusIndicatorColor =
       props.statusIndicatorColor ?? defaultStatusIndicatorColor;
     const cardForegroundColor = getThemeColorCssValue(
@@ -415,21 +416,7 @@ const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHe
                           props.cardBackgroundColor.contrastingColor,
                       ),
                       margin: 0,
-                      ...(props.heading.styles.fontFamily !== "default"
-                        ? { fontFamily: props.heading.styles.fontFamily }
-                        : {}),
-                      ...(props.heading.styles.fontSize !== "default"
-                        ? { fontSize: props.heading.styles.fontSize }
-                        : {}),
-                      ...(props.heading.styles.fontStyle !== "default"
-                        ? { fontStyle: props.heading.styles.fontStyle }
-                        : {}),
-                      ...(props.heading.styles.fontWeight !== "default"
-                        ? { fontWeight: props.heading.styles.fontWeight }
-                        : {}),
-                      ...(props.heading.styles.textTransform !== "default"
-                        ? { textTransform: props.heading.styles.textTransform }
-                        : {}),
+                      ...resolveTextStyles(props.heading.styles),
                     }}
                   >
                     {resolvedHeading}
@@ -491,7 +478,7 @@ const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHe
                     <span
                       style={{
                         color: getThemeColorCssValue(starColor),
-                        fontSize: "16px",
+
                       }}
                     >
                       {t("fiveStars", "★★★★★")}
@@ -516,14 +503,7 @@ const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHe
                       marginTop: "18px",
                     }}
                   >
-                    {React.isValidElement(resolvedBody) ? (
-                      resolvedBody
-                    ) : (
-                      <MaybeRTF
-                        data={typeof resolvedBody === "string" ? resolvedBody : ""}
-                        richTextStyleOverrides={bodyStyleOverrides}
-                      />
-                    )}
+                    <ResolvedRichText content={resolvedBody} overrides={bodyStyleOverrides} />
                   </div>
                 </EntityField>
                 <div
@@ -582,7 +562,7 @@ const BusinessConsultingHeroSectionComponent: PuckComponent<BusinessConsultingHe
 
 export const BusinessConsultingHeroSection: YextComponentConfig<BusinessConsultingHeroSectionProps> =
   {
-    label: msg("components.heroSection", "Hero Section"),
+    label: msg("components.heroLabel", "Hero"),
     fields: BusinessConsultingHeroSectionFields,
     defaultProps: {
       heading: {
@@ -714,7 +694,7 @@ export const BusinessConsultingHeroSection: YextComponentConfig<BusinessConsulti
 
 export const config: SectionConfig = {
   id: "BusinessConsultingHeroSection",
-  displayName: "Hero Section",
+  displayName: "Hero",
   description: "Hero Section",
   pageSetTypes: ["ENTITY"],
 };

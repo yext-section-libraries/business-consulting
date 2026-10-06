@@ -1,3 +1,5 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -67,85 +69,58 @@ const reviewsSectionScope = "ybc-reviews-section";
 
 const reviewsSectionScopedTypographyStyles = `
   [data-scope="${reviewsSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
+
   }
 
   [data-scope="${reviewsSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 `;
@@ -255,7 +230,7 @@ const defaultResponseLabel: StyledHeadingProps = {
   styles: {
     fontFamily: "default",
     fontSize: "default",
-    fontWeight: "600",
+    fontWeight: "default",
     fontStyle: "default",
     textTransform: "default",
   },
@@ -290,9 +265,9 @@ const getEditorFallbackReviews = (content: string): ReviewRecord[] => [
 
 const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultingReviewsSectionProps> =
   (props) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const streamDocument = useDocument<ReviewDocument>();
-    const locale = streamDocument.locale ?? "en";
+    const locale = i18n.language;
     const { averageRating, reviewCount } = getAggregateRating(streamDocument);
     const firstPartyAggregate = streamDocument.ref_reviewsAgg?.find(
       (aggregate) => aggregate.publisher === "FIRSTPARTY",
@@ -329,23 +304,9 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
     );
     const responseLabelStyle: React.CSSProperties = {
       color: responseLabelColor,
-      fontWeight: 600,
+
       margin: 0,
-      ...(responseLabel.styles.fontFamily !== "default"
-        ? { fontFamily: responseLabel.styles.fontFamily }
-        : {}),
-      ...(responseLabel.styles.fontSize !== "default"
-        ? { fontSize: responseLabel.styles.fontSize }
-        : {}),
-      ...(responseLabel.styles.fontStyle !== "default"
-        ? { fontStyle: responseLabel.styles.fontStyle }
-        : {}),
-      ...(responseLabel.styles.fontWeight !== "default"
-        ? { fontWeight: responseLabel.styles.fontWeight }
-        : {}),
-      ...(responseLabel.styles.textTransform !== "default"
-        ? { textTransform: responseLabel.styles.textTransform }
-        : {}),
+      ...resolveTextStyles(responseLabel.styles),
     };
 
     if (!displayedReviews.length) {
@@ -403,21 +364,7 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                     style={{
                       color: headingColor,
                       margin: 0,
-                      ...(props.heading.styles.fontFamily !== "default"
-                        ? { fontFamily: props.heading.styles.fontFamily }
-                        : {}),
-                      ...(props.heading.styles.fontSize !== "default"
-                        ? { fontSize: props.heading.styles.fontSize }
-                        : {}),
-                      ...(props.heading.styles.fontStyle !== "default"
-                        ? { fontStyle: props.heading.styles.fontStyle }
-                        : {}),
-                      ...(props.heading.styles.fontWeight !== "default"
-                        ? { fontWeight: props.heading.styles.fontWeight }
-                        : {}),
-                      ...(props.heading.styles.textTransform !== "default"
-                        ? { textTransform: props.heading.styles.textTransform }
-                        : {}),
+                      ...resolveTextStyles(props.heading.styles),
                     }}
                   >
                     {resolvedHeading}
@@ -464,12 +411,12 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
                           { rating: review.rating ?? 5 },
                         )}
                       </p>
-                      <p style={{ color: reviewTextColor, fontWeight: 600, margin: "14px 0 10px" }}>{review.authorName}</p>
+                      <p style={{ color: reviewTextColor,  margin: "14px 0 10px" }}>{review.authorName}</p>
                       {review.reviewDate ? (
                         <p
                           style={{
                             color: reviewTextColor,
-                            fontSize: "14px",
+
                             margin: "0 0 12px",
                           }}
                         >
@@ -524,7 +471,7 @@ const BusinessConsultingReviewsSectionComponent: PuckComponent<BusinessConsultin
 
 export const BusinessConsultingReviewsSection: YextComponentConfig<BusinessConsultingReviewsSectionProps> =
   {
-    label: msg("components.reviewsSection", "Reviews Section"),
+    label: msg("components.reviewsLabel", "Reviews"),
     fields: BusinessConsultingReviewsSectionFields,
     defaultProps: {
       heading: {
@@ -565,7 +512,7 @@ export const BusinessConsultingReviewsSection: YextComponentConfig<BusinessConsu
 
 export const config: SectionConfig = {
   id: "BusinessConsultingReviewsSection",
-  displayName: "Reviews Section",
+  displayName: "Reviews",
   description: "Reviews Section",
   pageSetTypes: ["ENTITY"],
 };

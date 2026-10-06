@@ -57,59 +57,48 @@ export const getCardStyle = (
   padding,
 });
 
+type TypographyOverrides = Partial<Pick<
+  StyledTextValue,
+  "fontFamily" | "fontSize" | "fontWeight" | "fontStyle" | "textTransform"
+>>;
+
+/** Undefined and default leave each semantic CSS property active. */
+export const resolveTextStyles = (styles?: TypographyOverrides) => ({
+  fontFamily: styles?.fontFamily === "default" ? undefined : styles?.fontFamily,
+  fontSize: styles?.fontSize === "default" ? undefined : styles?.fontSize,
+  fontWeight: styles?.fontWeight === "default" ? undefined : styles?.fontWeight,
+  fontStyle: styles?.fontStyle === "default" ? undefined : styles?.fontStyle,
+  textTransform:
+    styles?.textTransform === "default" ? undefined : styles?.textTransform,
+});
+
+export const getBodyStyleOverrides = (
+  styles?: TypographyOverrides,
+): CSSProperties => {
+  const normalized = resolveTextStyles(styles);
+  const result: Record<string, string | number | undefined> = {};
+  for (const [property, value] of Object.entries(normalized)) {
+    if (value !== undefined) {
+      result[property] = value;
+      result[`--ybc-body-${property}`] = value;
+      result[`--${property}-body-${property}`] = value;
+    }
+  }
+  return result;
+};
+
 export const getRichTextStyleOverrides = (
-  styles: StyledTextValue,
+  styles?: TypographyOverrides,
   color?: ThemeColor | string,
 ) => ({
   color: getThemeColorCssValue(color),
-  ...(styles.fontFamily !== "default" ? { fontFamily: styles.fontFamily } : {}),
-  ...(styles.fontSize !== "default" ? { fontSize: styles.fontSize } : {}),
-  ...(styles.fontStyle !== "default" ? { fontStyle: styles.fontStyle } : {}),
-  ...(styles.fontWeight !== "default" ? { fontWeight: styles.fontWeight } : {}),
-  ...(styles.textTransform !== "default"
-    ? { textTransform: styles.textTransform }
-    : {}),
+  ...resolveTextStyles(styles),
 });
 
-/**
- * Produces the theme typography rules shared by custom sections. Section-only
- * layout rules can be appended by the caller.
- */
+/** Only link decoration is section-specific; typography lives in shared CSS. */
 export const getScopedTypographyStyles = (
   scope: string,
   linkDecoration: CSSProperties["textDecoration"] = "underline",
 ): string => `
-  [data-scope="${scope}"] p,
-  [data-scope="${scope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
-    line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
-  }
-
-  ${[1, 2, 3, 4, 5, 6]
-    .map(
-      (level) => `[data-scope="${scope}"] h${level} {
-    font-family: var(--fontFamily-h${level}-fontFamily);
-    font-size: var(--fontSize-h${level}-fontSize);
-    line-height: 1.2;
-    font-weight: var(--fontWeight-h${level}-fontWeight);
-    font-style: var(--fontStyle-h${level}-fontStyle);
-    text-transform: var(--textTransform-h${level}-textTransform);
-  }`,
-    )
-    .join("\n\n  ")}
-
-  [data-scope="${scope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
-    line-height: 1.5;
-    text-decoration: ${linkDecoration};
-    text-transform: var(--textTransform-link-textTransform);
-    letter-spacing: var(--letterSpacing-link-letterSpacing);
-  }
+  [data-scope="${scope}"] a { text-decoration: ${linkDecoration}; }
 `;

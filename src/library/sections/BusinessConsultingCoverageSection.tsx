@@ -1,3 +1,6 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -13,7 +16,6 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  MaybeRTF,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
@@ -73,85 +75,58 @@ const coverageSectionScope = "ybc-coverage-section";
 
 const coverageSectionScopedTypographyStyles = `
   [data-scope="${coverageSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
+
   }
 
   [data-scope="${coverageSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 `;
@@ -302,12 +277,12 @@ const BusinessConsultingCoverageSectionFields: YextFields<BusinessConsultingCove
 
 const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsultingCoverageSectionProps> =
   (props) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const streamDocument = useDocument();
     const { relativePrefixToRoot } = useTemplateProps<{
       relativePrefixToRoot?: string;
     }>();
-    const locale = streamDocument.locale ?? "en";
+    const locale = i18n.language;
     const coordinate = streamDocument?.yextDisplayCoordinate;
     const enableNearbyLocations =
       coordinate?.latitude !== undefined &&
@@ -368,21 +343,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
                     props.section.backgroundColor.contrastingColor,
                 ),
                 margin: 0,
-                ...(props.heading.styles.fontFamily !== "default"
-                  ? { fontFamily: props.heading.styles.fontFamily }
-                  : {}),
-                ...(props.heading.styles.fontSize !== "default"
-                  ? { fontSize: props.heading.styles.fontSize }
-                  : {}),
-                ...(props.heading.styles.fontStyle !== "default"
-                  ? { fontStyle: props.heading.styles.fontStyle }
-                  : {}),
-                ...(props.heading.styles.fontWeight !== "default"
-                  ? { fontWeight: props.heading.styles.fontWeight }
-                  : {}),
-                ...(props.heading.styles.textTransform !== "default"
-                  ? { textTransform: props.heading.styles.textTransform }
-                  : {}),
+                ...resolveTextStyles(props.heading.styles),
               }}
             >
               {resolvedHeading}
@@ -394,14 +355,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
             constantValueEnabled={props.intro.text.constantValueEnabled}
           >
             <div style={{ lineHeight: 1.8, marginTop: "14px" }}>
-              {React.isValidElement(resolvedIntro) ? (
-                resolvedIntro
-              ) : (
-                <MaybeRTF
-                  data={typeof resolvedIntro === "string" ? resolvedIntro : ""}
-                  richTextStyleOverrides={introStyleOverrides}
-                />
-              )}
+              <ResolvedRichText content={resolvedIntro} overrides={introStyleOverrides} />
             </div>
           </EntityField>
         </div>
@@ -678,7 +632,7 @@ const BusinessConsultingCoverageSectionComponent: PuckComponent<BusinessConsulti
 
 export const BusinessConsultingCoverageSection: YextComponentConfig<BusinessConsultingCoverageSectionProps> =
   {
-    label: msg("components.coverageSection", "Coverage Section"),
+    label: msg("components.coverageLabel", "Coverage"),
     fields: BusinessConsultingCoverageSectionFields,
     defaultProps: {
       heading: {
@@ -774,7 +728,7 @@ export const BusinessConsultingCoverageSection: YextComponentConfig<BusinessCons
 
 export const config: SectionConfig = {
   id: "BusinessConsultingCoverageSection",
-  displayName: "Coverage Section",
+  displayName: "Coverage",
   description: "Coverage Section",
   pageSetTypes: ["ENTITY"],
 };
