@@ -1,3 +1,7 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import "../shared/typography.css";
+import { useTranslation } from "react-i18next";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -14,7 +18,6 @@ import {
   type ComprehensiveCTAValue,
   EntityField,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
   type CTAVariant,
   type EnhancedTranslatableCTA,
@@ -276,85 +279,58 @@ const servicesSectionScopedTypographyStyles = `
   }
 
   [data-scope="${servicesSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
+
   }
 
   [data-scope="${servicesSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 `;
@@ -556,7 +532,8 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
   BusinessConsultingServicesSectionProps
 > = (props) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const cards = serviceCardsSource.resolveItems(props.cards, streamDocument);
   const headingText =
     resolveComponentData(props.heading.text, locale, streamDocument) || "";
@@ -611,21 +588,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                         props.section.backgroundColor.contrastingColor,
                     ),
                     margin: 0,
-                    ...(props.heading.styles.fontFamily !== "default"
-                      ? { fontFamily: props.heading.styles.fontFamily }
-                      : {}),
-                    ...(props.heading.styles.fontSize !== "default"
-                      ? { fontSize: props.heading.styles.fontSize }
-                      : {}),
-                    ...(props.heading.styles.fontStyle !== "default"
-                      ? { fontStyle: props.heading.styles.fontStyle }
-                      : {}),
-                    ...(props.heading.styles.fontWeight !== "default"
-                      ? { fontWeight: props.heading.styles.fontWeight }
-                      : {}),
-                    ...(props.heading.styles.textTransform !== "default"
-                      ? { textTransform: props.heading.styles.textTransform }
-                      : {}),
+                    ...resolveTextStyles(props.heading.styles),
                   }}
                 >
                   {headingText}
@@ -642,16 +605,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                     margin: "14px 0 0",
                   }}
                 >
-                  {React.isValidElement(resolvedIntro) ? (
-                    resolvedIntro
-                  ) : (
-                    <MaybeRTF
-                      data={
-                        typeof resolvedIntro === "string" ? resolvedIntro : ""
-                      }
-                      richTextStyleOverrides={introStyles}
-                    />
-                  )}
+                  <ResolvedRichText content={resolvedIntro} overrides={introStyles} />
                 </div>
               </EntityField>
             </div>
@@ -769,29 +723,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                                 props.cardBackgroundColor.contrastingColor,
                             ),
                             margin: 0,
-                            ...(cardTitleStyles.styles.fontFamily !== "default"
-                              ? {
-                                  fontFamily: cardTitleStyles.styles.fontFamily,
-                                }
-                              : {}),
-                            ...(cardTitleStyles.styles.fontSize !== "default"
-                              ? { fontSize: cardTitleStyles.styles.fontSize }
-                              : {}),
-                            ...(cardTitleStyles.styles.fontStyle !== "default"
-                              ? { fontStyle: cardTitleStyles.styles.fontStyle }
-                              : {}),
-                            ...(cardTitleStyles.styles.fontWeight !== "default"
-                              ? {
-                                  fontWeight: cardTitleStyles.styles.fontWeight,
-                                }
-                              : {}),
-                            ...(cardTitleStyles.styles.textTransform !==
-                            "default"
-                              ? {
-                                  textTransform:
-                                    cardTitleStyles.styles.textTransform,
-                                }
-                              : {}),
+                            ...resolveTextStyles(cardTitleStyles.styles),
                           }}
                         >
                           {resolvedTitle}
@@ -802,18 +734,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
                             margin: "12px 0 18px",
                           }}
                         >
-                          {React.isValidElement(resolvedBody) ? (
-                            resolvedBody
-                          ) : (
-                            <MaybeRTF
-                              data={
-                                typeof resolvedBody === "string"
-                                  ? resolvedBody
-                                  : ""
-                              }
-                              richTextStyleOverrides={bodyStyles}
-                            />
-                          )}
+                          <ResolvedRichText content={resolvedBody} overrides={bodyStyles} />
                         </div>
                         {cardCtaValue ? (
                           <ComprehensiveCTA
@@ -900,7 +821,7 @@ const BusinessConsultingServicesSectionComponent: PuckComponent<
 
 export const BusinessConsultingServicesSection: YextComponentConfig<BusinessConsultingServicesSectionProps> =
   {
-    label: msg("components.servicesSection", "Services Section"),
+    label: msg("components.servicesLabel", "Services"),
     fields: BusinessConsultingServicesSectionFields,
     defaultProps: {
       heading: {
@@ -987,7 +908,7 @@ export const BusinessConsultingServicesSection: YextComponentConfig<BusinessCons
 
 export const config: SectionConfig = {
   id: "BusinessConsultingServicesSection",
-  displayName: "Services Section",
+  displayName: "Services",
   description: "Services Section",
   pageSetTypes: ["ENTITY"],
 };

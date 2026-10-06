@@ -1,3 +1,7 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import "../shared/typography.css";
+import { useTranslation } from "react-i18next";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -13,7 +17,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
@@ -134,85 +137,58 @@ const promoSectionScope = "ybc-promo-section";
 
 const promoSectionScopedTypographyStyles = `
   [data-scope="${promoSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
+
   }
 
   [data-scope="${promoSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 
@@ -290,7 +266,8 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
   BusinessConsultingPromoSectionProps
 > = (props) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const resolvedHeading =
     resolveComponentData(props.heading.text, locale, streamDocument) || "";
   const bodyStyleOverrides = getRichTextStyleOverrides(
@@ -378,21 +355,7 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
                           props.panelBackgroundColor.contrastingColor,
                       ),
                       margin: 0,
-                      ...(props.heading.styles.fontFamily !== "default"
-                        ? { fontFamily: props.heading.styles.fontFamily }
-                        : {}),
-                      ...(props.heading.styles.fontSize !== "default"
-                        ? { fontSize: props.heading.styles.fontSize }
-                        : {}),
-                      ...(props.heading.styles.fontStyle !== "default"
-                        ? { fontStyle: props.heading.styles.fontStyle }
-                        : {}),
-                      ...(props.heading.styles.fontWeight !== "default"
-                        ? { fontWeight: props.heading.styles.fontWeight }
-                        : {}),
-                      ...(props.heading.styles.textTransform !== "default"
-                        ? { textTransform: props.heading.styles.textTransform }
-                        : {}),
+                      ...resolveTextStyles(props.heading.styles),
                     }}
                   >
                     {resolvedHeading}
@@ -409,16 +372,7 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
                       marginTop: "18px",
                     }}
                   >
-                    {React.isValidElement(resolvedBody) ? (
-                      resolvedBody
-                    ) : (
-                      <MaybeRTF
-                        data={
-                          typeof resolvedBody === "string" ? resolvedBody : ""
-                        }
-                        richTextStyleOverrides={bodyStyleOverrides}
-                      />
-                    )}
+                    <ResolvedRichText content={resolvedBody} overrides={bodyStyleOverrides} />
                   </div>
                 </EntityField>
                 <EntityField
@@ -480,7 +434,7 @@ const BusinessConsultingPromoSectionComponent: PuckComponent<
 
 export const BusinessConsultingPromoSection: YextComponentConfig<BusinessConsultingPromoSectionProps> =
   {
-    label: msg("components.promoSection", "Promo Section"),
+    label: msg("components.promoLabel", "Promo"),
     fields: BusinessConsultingPromoSectionFields,
     defaultProps: {
       heading: {
@@ -574,7 +528,7 @@ export const BusinessConsultingPromoSection: YextComponentConfig<BusinessConsult
 
 export const config: SectionConfig = {
   id: "BusinessConsultingPromoSection",
-  displayName: "Promo Section",
+  displayName: "Promo",
   description: "Promo Section",
   pageSetTypes: ["ENTITY"],
 };

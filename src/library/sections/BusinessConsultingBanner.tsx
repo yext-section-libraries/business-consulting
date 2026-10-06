@@ -1,6 +1,8 @@
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import { getRichTextStyleOverrides } from "../shared/sectionHelpers";
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
-import { isValidElement } from "react";
 import { PuckComponent } from "@puckeditor/core";
 import { CircleSlash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -8,7 +10,6 @@ import {
   msg,
   Body,
   EntityField,
-  MaybeRTF,
   PageSection,
   type StyledTextValue,
   type ThemeColor,
@@ -139,16 +140,16 @@ const BusinessConsultingBannerComponent: PuckComponent<BusinessConsultingBannerP
     return (
       <PageSection
         background={section.backgroundColor}
-        className="flex items-center justify-center"
+        className="ybc-typography flex items-center justify-center"
         verticalPadding="sm"
       >
         <div className="relative flex h-20 w-full flex-row items-center justify-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-4">
           <CircleSlash2 className="h-10 w-10 flex-shrink-0 text-gray-400" />
           <div className="flex flex-col items-start">
-            <Body className="font-medium text-gray-500" variant="sm">
+            <Body className="text-gray-500" variant="sm">
               Section hidden for this page
             </Body>
-            <Body className="font-normal text-gray-500" variant="sm">
+            <Body className="text-gray-500" variant="sm">
               The mapped banner field is empty
             </Body>
           </div>
@@ -157,10 +158,10 @@ const BusinessConsultingBannerComponent: PuckComponent<BusinessConsultingBannerP
     );
   }
 
-  const richTextStyleOverrides = {
-    ...data.styles,
-    color: data.fontColor ?? section.backgroundColor.contrastingColor,
-  };
+  const richTextStyleOverrides = getRichTextStyleOverrides(
+    data.styles,
+    data.fontColor ?? section.backgroundColor.contrastingColor,
+  );
   const resolvedText = resolveComponentData(
     data.text,
     i18n.language,
@@ -174,7 +175,7 @@ const BusinessConsultingBannerComponent: PuckComponent<BusinessConsultingBannerP
   return (
     <PageSection
       background={section.backgroundColor}
-      className={`flex items-center ${
+      className={`ybc-typography flex items-center ${
         {
           left: "justify-start text-left",
           center: "justify-center text-center",
@@ -188,14 +189,7 @@ const BusinessConsultingBannerComponent: PuckComponent<BusinessConsultingBannerP
         displayName="Banner Text"
         fieldId={data.text.field}
       >
-        {isValidElement(resolvedText) ? (
-          resolvedText
-        ) : typeof resolvedText === "string" ? (
-          <MaybeRTF
-            data={resolvedText}
-            richTextStyleOverrides={richTextStyleOverrides}
-          />
-        ) : null}
+        <ResolvedRichText content={resolvedText} overrides={richTextStyleOverrides} />
       </EntityField>
     </PageSection>
   );

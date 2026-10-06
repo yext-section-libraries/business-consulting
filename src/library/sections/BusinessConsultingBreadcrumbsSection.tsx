@@ -1,3 +1,6 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import "../shared/typography.css";
+import { useTranslation } from "react-i18next";
 import type { SectionConfig } from "@yext/visual-editor";
 import * as React from "react";
 import { PuckComponent } from "@puckeditor/core";
@@ -51,22 +54,16 @@ const breadcrumbsSectionScope = "ybc-breadcrumbs-section";
 
 const breadcrumbsSectionScopedTypographyStyles = `
   [data-scope="${breadcrumbsSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${breadcrumbsSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: none;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 
@@ -102,7 +99,7 @@ const breadcrumbsSectionScopedTypographyStyles = `
   }
 
   [data-scope="${breadcrumbsSectionScope}"] .breadcrumbs-section__separator {
-    font-size: 14px;
+
     opacity: 0.55;
   }
 
@@ -197,7 +194,7 @@ const defaultRootLabel: StyledTextProps = {
   styles: {
     fontFamily: "default",
     fontSize: "default",
-    fontWeight: "600",
+    fontWeight: "default",
     fontStyle: "default",
     textTransform: "default",
   },
@@ -209,13 +206,7 @@ const getStyledTextOverrides = (
   color?: ThemeColor | string,
 ): React.CSSProperties => ({
   color: getThemeColorCssValue(color),
-  ...(styles.fontFamily !== "default" ? { fontFamily: styles.fontFamily } : {}),
-  ...(styles.fontSize !== "default" ? { fontSize: styles.fontSize } : {}),
-  ...(styles.fontStyle !== "default" ? { fontStyle: styles.fontStyle } : {}),
-  ...(styles.fontWeight !== "default" ? { fontWeight: styles.fontWeight } : {}),
-  ...(styles.textTransform !== "default"
-    ? { textTransform: styles.textTransform }
-    : {}),
+  ...resolveTextStyles(styles),
 });
 
 const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
@@ -225,7 +216,8 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
   const { relativePrefixToRoot } = useTemplateProps<{
     relativePrefixToRoot?: string;
   }>();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const breadcrumbs = (resolveBreadcrumbs(streamDocument) ??
     []) as BreadcrumbItem[];
   const rootLabel =
@@ -283,7 +275,7 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
                     streamDocument,
                   ),
                   color: getThemeColorCssValue(currentPageColor),
-                  fontFamily: "Arial, Helvetica, sans-serif",
+
                   padding: "18px 24px",
                 }}
               >
@@ -426,7 +418,7 @@ const BusinessConsultingBreadcrumbsSectionComponent: PuckComponent<
 
 export const BusinessConsultingBreadcrumbsSection: YextComponentConfig<BusinessConsultingBreadcrumbsSectionProps> =
   {
-    label: msg("components.breadcrumbsSection", "Breadcrumbs Section"),
+    label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
     fields: BusinessConsultingBreadcrumbsSectionFields,
     defaultProps: {
       rootLabel: defaultRootLabel,
@@ -452,7 +444,7 @@ export const BusinessConsultingBreadcrumbsSection: YextComponentConfig<BusinessC
 
 export const config: SectionConfig = {
   id: "BusinessConsultingBreadcrumbsSection",
-  displayName: "Breadcrumbs Section",
+  displayName: "Breadcrumbs",
   description: "Breadcrumbs Section",
   pageSetTypes: ["ENTITY"],
 };

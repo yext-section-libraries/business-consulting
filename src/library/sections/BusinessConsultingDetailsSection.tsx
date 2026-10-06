@@ -1,3 +1,6 @@
+import { resolveTextStyles } from "../shared/sectionHelpers";
+import { ResolvedRichText } from "../shared/ResolvedRichText";
+import "../shared/typography.css";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -17,7 +20,6 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  MaybeRTF,
   VisibilityWrapper,
   YextComponentConfig,
   YextEntityField,
@@ -442,8 +444,8 @@ const defaultDetailsLabels: DetailsLabels = {
     },
     styles: {
       ...defaultDetailsLabelStyles,
-      fontSize: "13px",
-      fontWeight: "600",
+      fontSize: "default",
+      fontWeight: "default",
     },
   },
   serviceRadius: {
@@ -483,94 +485,64 @@ const detailsSectionScope = "ybc-details-section";
 
 const detailsSectionScopedTypographyStyles = `
   [data-scope="${detailsSectionScope}"] {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] p {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] li {
-    font-family: var(--fontFamily-body-fontFamily);
-    font-size: var(--fontSize-body-fontSize);
+
     line-height: 1.5;
-    font-weight: var(--fontWeight-body-fontWeight);
-    font-style: var(--fontStyle-body-fontStyle);
-    text-transform: var(--textTransform-body-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] h1 {
-    font-family: var(--fontFamily-h1-fontFamily);
-    font-size: var(--fontSize-h1-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h1-fontWeight);
-    font-style: var(--fontStyle-h1-fontStyle);
-    text-transform: var(--textTransform-h1-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] h2 {
-    font-family: var(--fontFamily-h2-fontFamily);
-    font-size: var(--fontSize-h2-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h2-fontWeight);
-    font-style: var(--fontStyle-h2-fontStyle);
-    text-transform: var(--textTransform-h2-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] h3 {
-    font-family: var(--fontFamily-h3-fontFamily);
-    font-size: var(--fontSize-h3-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h3-fontWeight);
-    font-style: var(--fontStyle-h3-fontStyle);
-    text-transform: var(--textTransform-h3-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] h4 {
-    font-family: var(--fontFamily-h4-fontFamily);
-    font-size: var(--fontSize-h4-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h4-fontWeight);
-    font-style: var(--fontStyle-h4-fontStyle);
-    text-transform: var(--textTransform-h4-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] h5 {
-    font-family: var(--fontFamily-h5-fontFamily);
-    font-size: var(--fontSize-h5-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h5-fontWeight);
-    font-style: var(--fontStyle-h5-fontStyle);
-    text-transform: var(--textTransform-h5-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] h6 {
-    font-family: var(--fontFamily-h6-fontFamily);
-    font-size: var(--fontSize-h6-fontSize);
+
     line-height: 1.2;
-    font-weight: var(--fontWeight-h6-fontWeight);
-    font-style: var(--fontStyle-h6-fontStyle);
-    text-transform: var(--textTransform-h6-textTransform);
+
   }
 
   [data-scope="${detailsSectionScope}"] a {
-    font-family: var(--fontFamily-link-fontFamily);
-    font-size: var(--fontSize-link-fontSize);
-    font-weight: var(--fontWeight-link-fontWeight);
-    font-style: var(--fontStyle-link-fontStyle);
+
     line-height: 1.5;
     text-decoration: underline;
-    text-transform: var(--textTransform-link-textTransform);
+
     letter-spacing: var(--letterSpacing-link-letterSpacing);
   }
 `;
@@ -579,7 +551,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
   (props) => {
     const { t, i18n } = useTranslation();
     const streamDocument = useDocument();
-    const locale = streamDocument.locale ?? "en";
+    const locale = i18n.language;
     const resolvedHeading =
       resolveComponentData(props.heading.text, locale, streamDocument) || "";
     const detailsLabels = props.detailsLabels ?? defaultDetailsLabels;
@@ -615,61 +587,19 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
         props.cardHeaderStyles.fontColor ?? cardForeground,
       ),
       margin: 0,
-      ...(props.cardHeaderStyles.styles.fontFamily !== "default"
-        ? { fontFamily: props.cardHeaderStyles.styles.fontFamily }
-        : {}),
-      ...(props.cardHeaderStyles.styles.fontSize !== "default"
-        ? { fontSize: props.cardHeaderStyles.styles.fontSize }
-        : {}),
-      ...(props.cardHeaderStyles.styles.fontStyle !== "default"
-        ? { fontStyle: props.cardHeaderStyles.styles.fontStyle }
-        : {}),
-      ...(props.cardHeaderStyles.styles.fontWeight !== "default"
-        ? { fontWeight: props.cardHeaderStyles.styles.fontWeight }
-        : {}),
-      ...(props.cardHeaderStyles.styles.textTransform !== "default"
-        ? { textTransform: props.cardHeaderStyles.styles.textTransform }
-        : {}),
+      ...resolveTextStyles(props.cardHeaderStyles.styles),
     };
     const baseHubStyle: React.CSSProperties = {
       color: getThemeColorCssValue(detailsLabels.baseHub.fontColor ?? cardForeground),
       margin: 0,
-      ...(detailsLabels.baseHub.styles.fontFamily !== "default"
-        ? { fontFamily: detailsLabels.baseHub.styles.fontFamily }
-        : {}),
-      ...(detailsLabels.baseHub.styles.fontSize !== "default"
-        ? { fontSize: detailsLabels.baseHub.styles.fontSize }
-        : {}),
-      ...(detailsLabels.baseHub.styles.fontStyle !== "default"
-        ? { fontStyle: detailsLabels.baseHub.styles.fontStyle }
-        : {}),
-      ...(detailsLabels.baseHub.styles.fontWeight !== "default"
-        ? { fontWeight: detailsLabels.baseHub.styles.fontWeight }
-        : {}),
-      ...(detailsLabels.baseHub.styles.textTransform !== "default"
-        ? { textTransform: detailsLabels.baseHub.styles.textTransform }
-        : {}),
+      ...resolveTextStyles(detailsLabels.baseHub.styles),
     };
     const serviceRadiusStyle: React.CSSProperties = {
       color: getThemeColorCssValue(
         detailsLabels.serviceRadius.fontColor ?? cardForeground,
       ),
       margin: "8px 0 0",
-      ...(detailsLabels.serviceRadius.styles.fontFamily !== "default"
-        ? { fontFamily: detailsLabels.serviceRadius.styles.fontFamily }
-        : {}),
-      ...(detailsLabels.serviceRadius.styles.fontSize !== "default"
-        ? { fontSize: detailsLabels.serviceRadius.styles.fontSize }
-        : {}),
-      ...(detailsLabels.serviceRadius.styles.fontStyle !== "default"
-        ? { fontStyle: detailsLabels.serviceRadius.styles.fontStyle }
-        : {}),
-      ...(detailsLabels.serviceRadius.styles.fontWeight !== "default"
-        ? { fontWeight: detailsLabels.serviceRadius.styles.fontWeight }
-        : {}),
-      ...(detailsLabels.serviceRadius.styles.textTransform !== "default"
-        ? { textTransform: detailsLabels.serviceRadius.styles.textTransform }
-        : {}),
+      ...resolveTextStyles(detailsLabels.serviceRadius.styles),
     };
     const resolvedAddress = resolveComponentData(props.address, locale, streamDocument);
     const resolvedPhoneItems = (props.bookingPhone.items ?? [])
@@ -751,21 +681,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
       )
       .filter((item) => item.length > 0);
     const complimentaryServiceItemStyle: React.CSSProperties = {
-      ...(props.complimentaryServices.styles.fontFamily !== "default"
-        ? { fontFamily: props.complimentaryServices.styles.fontFamily }
-        : {}),
-      ...(props.complimentaryServices.styles.fontSize !== "default"
-        ? { fontSize: props.complimentaryServices.styles.fontSize }
-        : {}),
-      ...(props.complimentaryServices.styles.fontStyle !== "default"
-        ? { fontStyle: props.complimentaryServices.styles.fontStyle }
-        : {}),
-      ...(props.complimentaryServices.styles.fontWeight !== "default"
-        ? { fontWeight: props.complimentaryServices.styles.fontWeight }
-        : {}),
-      ...(props.complimentaryServices.styles.textTransform !== "default"
-        ? { textTransform: props.complimentaryServices.styles.textTransform }
-        : {}),
+      ...resolveTextStyles(props.complimentaryServices.styles),
     };
     const alignItemsMap: Record<HoursStyles["alignment"], React.CSSProperties["alignItems"]> = {
       "items-start": "flex-start",
@@ -808,21 +724,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
                     ),
                     margin: "0 0 28px",
                     textAlign: "center",
-                    ...(props.heading.styles.fontFamily !== "default"
-                      ? { fontFamily: props.heading.styles.fontFamily }
-                      : {}),
-                    ...(props.heading.styles.fontSize !== "default"
-                      ? { fontSize: props.heading.styles.fontSize }
-                      : {}),
-                    ...(props.heading.styles.fontStyle !== "default"
-                      ? { fontStyle: props.heading.styles.fontStyle }
-                      : {}),
-                    ...(props.heading.styles.fontWeight !== "default"
-                      ? { fontWeight: props.heading.styles.fontWeight }
-                      : {}),
-                    ...(props.heading.styles.textTransform !== "default"
-                      ? { textTransform: props.heading.styles.textTransform }
-                      : {}),
+                    ...resolveTextStyles(props.heading.styles),
                   }}
                 >
                   {resolvedHeading}
@@ -1021,14 +923,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
                     constantValueEnabled={props.detailsNote.text.constantValueEnabled}
                   >
                     <div style={{ marginTop: "18px" }}>
-                      {React.isValidElement(resolvedNote) ? (
-                        resolvedNote
-                      ) : (
-                        <MaybeRTF
-                          data={typeof resolvedNote === "string" ? resolvedNote : ""}
-                          richTextStyleOverrides={noteStyleOverrides}
-                        />
-                      )}
+                      <ResolvedRichText content={resolvedNote} overrides={noteStyleOverrides} />
                     </div>
                   </EntityField>
                 </article>
@@ -1079,7 +974,7 @@ const BusinessConsultingDetailsSectionComponent: PuckComponent<BusinessConsultin
 
 export const BusinessConsultingDetailsSection: YextComponentConfig<BusinessConsultingDetailsSectionProps> =
   {
-    label: msg("components.detailsSection", "Details Section"),
+    label: msg("components.detailsLabel", "Details"),
     fields: BusinessConsultingDetailsSectionFields,
     defaultProps: {
       heading: {
@@ -1230,7 +1125,7 @@ export const BusinessConsultingDetailsSection: YextComponentConfig<BusinessConsu
 
 export const config: SectionConfig = {
   id: "BusinessConsultingDetailsSection",
-  displayName: "Details Section",
+  displayName: "Details",
   description: "Details Section",
   pageSetTypes: ["ENTITY"],
 };
