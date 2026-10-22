@@ -120,6 +120,7 @@
     "locationInformation": "Asukohateave",
     "logoImage": "Logo pilt",
     "longitude": "Pikkuskraad",
+    "mapStartingZoom": "Kaardi algne suumitase",
     "mapStyle": "Kaardistiil",
     "name": "Nimi",
     "navigation": "Navigeerimine",

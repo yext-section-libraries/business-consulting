@@ -120,6 +120,7 @@
     "locationInformation": "Platsinformation",
     "logoImage": "Logotypbild",
     "longitude": "Longitud",
+    "mapStartingZoom": "Kartans startzoom",
     "mapStyle": "Kartstil",
     "name": "Namn",
     "navigation": "Navigering",

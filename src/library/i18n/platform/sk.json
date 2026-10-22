@@ -120,6 +120,7 @@
     "locationInformation": "Informácie o mieste",
     "logoImage": "Obrázok loga",
     "longitude": "Dĺžka",
+    "mapStartingZoom": "Počiatočné priblíženie mapy",
     "mapStyle": "Mapový štýl",
     "name": "Meno",
     "navigation": "Navigácia",
