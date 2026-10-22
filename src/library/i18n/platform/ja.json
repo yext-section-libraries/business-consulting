@@ -120,6 +120,7 @@
     "locationInformation": "ロケーション情報",
     "logoImage": "ロゴ画像",
     "longitude": "経度",
+    "mapStartingZoom": "地図の初期ズームレベル",
     "mapStyle": "マップスタイル",
     "name": "名前",
     "navigation": "ナビゲーション",

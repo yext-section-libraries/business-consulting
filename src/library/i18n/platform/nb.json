@@ -120,6 +120,7 @@
     "locationInformation": "Stedsinformasjon",
     "logoImage": "Logobilde",
     "longitude": "Lengdegrad",
+    "mapStartingZoom": "Kartets startzoom",
     "mapStyle": "Kartstil",
     "name": "Navn",
     "navigation": "Navigasjon",

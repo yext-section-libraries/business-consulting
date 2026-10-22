@@ -120,6 +120,7 @@
     "locationInformation": "Informacije o lokaciji",
     "logoImage": "Slika logotipa",
     "longitude": "Dužina",
+    "mapStartingZoom": "Početna razina zumiranja karte",
     "mapStyle": "Stil karte",
     "name": "Ime",
     "navigation": "Navigacija",

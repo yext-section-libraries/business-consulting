@@ -120,6 +120,7 @@
     "locationInformation": "Standortinformationen",
     "logoImage": "Logobild",
     "longitude": "Längengrad",
+    "mapStartingZoom": "Anfängliche Zoomstufe der Karte",
     "mapStyle": "Kartenstil",
     "name": "Name",
     "navigation": "Navigation",

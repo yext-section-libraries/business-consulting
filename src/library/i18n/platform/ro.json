@@ -120,6 +120,7 @@
     "locationInformation": "Informații despre locație",
     "logoImage": "Imagine siglă",
     "longitude": "Longitudine",
+    "mapStartingZoom": "Nivelul inițial de zoom al hărții",
     "mapStyle": "Stilul hărții",
     "name": "Nume",
     "navigation": "Navigare",
