@@ -49,6 +49,7 @@
     "alignment": "Kohdista",
     "analytics": "Analytiikka",
     "answer": "Vastaus",
+    "autoSearchOnMapMove": "Hae automaattisesti kartan liikkeestä",
     "backgroundColor": "Taustaväri",
     "bannerText": "Banneriteksti",
     "baseHubLabel": "Peruskeskuksen tunniste",

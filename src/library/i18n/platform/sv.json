@@ -49,6 +49,7 @@
     "alignment": "Justera",
     "analytics": "Analys",
     "answer": "Svar",
+    "autoSearchOnMapMove": "Sök automatiskt på kartrörelse",
     "backgroundColor": "Bakgrundsfärg",
     "bannerText": "Bannertext",
     "baseHubLabel": "Etikett för basnav",

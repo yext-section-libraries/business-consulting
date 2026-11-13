@@ -49,6 +49,7 @@
     "alignment": "Juster",
     "analytics": "Analyser",
     "answer": "Svar",
+    "autoSearchOnMapMove": "Søg automatisk på kortbevægelse",
     "backgroundColor": "Baggrundsfarve",
     "bannerText": "Bannertekst",
     "baseHubLabel": "Etiket for basishub",

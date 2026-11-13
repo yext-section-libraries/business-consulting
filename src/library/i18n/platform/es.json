@@ -49,6 +49,7 @@
     "alignment": "Alinear",
     "analytics": "Analítica",
     "answer": "Respuesta",
+    "autoSearchOnMapMove": "Buscar automáticamente en el movimiento del mapa",
     "backgroundColor": "Color de fondo",
     "bannerText": "Texto del banner",
     "baseHubLabel": "Etiqueta del centro base",

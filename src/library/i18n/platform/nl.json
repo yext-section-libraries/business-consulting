@@ -49,6 +49,7 @@
     "alignment": "Uitlijnen",
     "analytics": "Analyse",
     "answer": "Antwoord",
+    "autoSearchOnMapMove": "Automatisch zoeken op kaartbeweging",
     "backgroundColor": "Achtergrondkleur",
     "bannerText": "Bannertekst",
     "baseHubLabel": "Label van basishub",

@@ -49,6 +49,7 @@
     "alignment": "Zarovnať",
     "analytics": "Analytika",
     "answer": "Odpoveď",
+    "autoSearchOnMapMove": "Automaticky hľadať pri pohybe mapy",
     "backgroundColor": "Farba pozadia",
     "bannerText": "Text bannera",
     "baseHubLabel": "Štítok základného centra",
