@@ -49,6 +49,7 @@
     "alignment": "Ausrichten",
     "analytics": "Analytics",
     "answer": "Antwort",
+    "autoSearchOnMapMove": "Automatische Suche nach Kartenbewegung",
     "backgroundColor": "Hintergrundfarbe",
     "bannerText": "Bannertext",
     "baseHubLabel": "Beschriftung des Basis-Hubs",

@@ -49,6 +49,7 @@
     "alignment": "Lygiuoti",
     "analytics": "Analizė",
     "answer": "Atsakymas",
+    "autoSearchOnMapMove": "Automatiškai ieškoti judėjimo žemėlapyje",
     "backgroundColor": "Fono spalva",
     "bannerText": "Reklamjuostės tekstas",
     "baseHubLabel": "Pagrindinio centro etiketė",

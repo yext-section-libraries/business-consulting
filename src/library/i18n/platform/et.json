@@ -49,6 +49,7 @@
     "alignment": "Joonda",
     "analytics": "Analüütika",
     "answer": "Vastus",
+    "autoSearchOnMapMove": "Otsige automaatselt kaardil liikumist",
     "backgroundColor": "Taustvärv",
     "bannerText": "Bänneri tekst",
     "baseHubLabel": "Baasjaoturi silt",

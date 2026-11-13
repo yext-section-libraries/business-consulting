@@ -49,6 +49,7 @@
     "alignment": "Igazítás",
     "analytics": "Analitika",
     "answer": "Válasz",
+    "autoSearchOnMapMove": "Automatikus keresés a térképen, mozgás",
     "backgroundColor": "Háttérszín",
     "bannerText": "Szalagszöveg",
     "baseHubLabel": "Alapközpont címkéje",

@@ -49,6 +49,7 @@
     "alignment": "整列",
     "analytics": "分析",
     "answer": "回答",
+    "autoSearchOnMapMove": "地図移動時に自動検索",
     "backgroundColor": "背景色",
     "bannerText": "バナーテキスト",
     "baseHubLabel": "ベースハブのラベル",

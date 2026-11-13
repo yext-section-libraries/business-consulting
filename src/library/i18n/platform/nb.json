@@ -49,6 +49,7 @@
     "alignment": "Juster",
     "analytics": "Analytics",
     "answer": "Svar",
+    "autoSearchOnMapMove": "Søk automatisk på kartbevegelse",
     "backgroundColor": "Bakgrunnsfarge",
     "bannerText": "Bannertekst",
     "baseHubLabel": "Etikett for basisknutepunkt",
